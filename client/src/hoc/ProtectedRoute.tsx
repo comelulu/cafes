@@ -1,13 +1,12 @@
-import React, { useEffect, useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { checkAuth } from "../api";
 
-// Define the component props type
 interface ProtectedRouteProps {
     children: ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -28,14 +27,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>; // Replace with a spinner or custom loading component as needed
+        return <p>Loading...</p>;
     }
 
     if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 
-    return <>{children}</>; // Render protected content if authenticated
+    return <>{children}</>;
 };
 
 export default ProtectedRoute;

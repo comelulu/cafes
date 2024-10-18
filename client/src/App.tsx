@@ -13,6 +13,51 @@ import Layout from "./components/common/Layout";
 import { FavoriteProvider } from "./context/FavoriteProvider";
 import EditCafePage from "./pages/Cafe/EditCafePage";
 
+const routes = [
+  {
+    path: "/",
+    element: <CafeListPage />,
+  },
+  {
+    path: "/cafes/:id",
+    element: <CafeDetailPage />,
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <AdminDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/create-cafe",
+    element: (
+      <ProtectedRoute>
+        <CreateCafePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/cafes",
+    element: (
+      <ProtectedRoute>
+        <AdminManageCafes />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/edit-cafe/:id",
+    element: (
+      <ProtectedRoute>
+        <EditCafePage />
+      </ProtectedRoute>
+    ),
+  },
+  { path: "/login", element: <LoginPage /> },
+  { path: "*", element: <NotFoundPage /> },
+];
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,47 +66,7 @@ const router = createBrowserRouter([
         <Layout isDetailPage={false} />
       </FavoriteProvider>
     ),
-    children: [
-      { path: "/", element: <CafeListPage /> },
-      {
-        path: "/cafes/:id",
-        element: <CafeDetailPage />,
-      },
-      {
-        path: "/admin",
-        element: (
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/create-cafe",
-        element: (
-          <ProtectedRoute>
-            <CreateCafePage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/cafes",
-        element: (
-          <ProtectedRoute>
-            <AdminManageCafes />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/edit-cafe/:id",
-        element: (
-          <ProtectedRoute>
-            <EditCafePage />
-          </ProtectedRoute>
-        ),
-      },
-      { path: "/login", element: <LoginPage /> },
-      { path: "*", element: <NotFoundPage /> },
-    ],
+    children: routes,
   },
 ]);
 

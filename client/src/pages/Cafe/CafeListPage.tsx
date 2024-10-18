@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CafeCard from "../../components/DetailPages/CafeCard";
 import Container from "../../components/common/Container";
 import { getCafes } from "../../api";
 
 interface Cafe {
-    id: string; // Assuming the ID is a string; change to number if needed
+    id: string;
     name: string;
     address: string;
     photos: string[];
     description: string;
 }
 
-const CafeListPage: React.FC = () => {
+const CafeListPage = (): JSX.Element | null => {
     const [cafes, setCafes] = useState<Cafe[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

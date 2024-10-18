@@ -20,7 +20,7 @@ interface FormData {
     facilities: Facilities;
 }
 
-const CreateCafePage: React.FC = () => {
+const CreateCafePage = (): JSX.Element | null => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [successMessage, setSuccessMessage] = useState<string>("");
@@ -62,7 +62,7 @@ const CreateCafePage: React.FC = () => {
         const { name, value, type } = e.target;
 
         if (type === "checkbox") {
-            const checked = (e.target as HTMLInputElement).checked; // Type assertion here
+            const checked = (e.target as HTMLInputElement).checked;
             setFormData((prevData) => ({
                 ...prevData,
                 facilities: {

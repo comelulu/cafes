@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
 
 interface CarouselModalProps {
@@ -9,13 +9,13 @@ interface CarouselModalProps {
     onPrev: () => void;
 }
 
-const CarouselModal: React.FC<CarouselModalProps> = ({
+const CarouselModal = ({
     photos,
     currentIndex,
     onClose,
     onNext,
     onPrev,
-}) => {
+}: CarouselModalProps): JSX.Element => {
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === "Escape") {

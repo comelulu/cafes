@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { adminLogin, checkAuth } from "../../api";
 
-
-const LoginPage: React.FC = () => {
+const LoginPage = (): JSX.Element => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");

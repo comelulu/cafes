@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { checkAuth, getCafes } from "../../api";
 
-const AdminDashboard: React.FC = () => {
+const AdminDashboard = (): JSX.Element => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [cafeCount, setCafeCount] = useState<number | null>(null);

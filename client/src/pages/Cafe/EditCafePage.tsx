@@ -1,5 +1,3 @@
-// src/pages/EditCafePage.tsx
-
 import React, { useState, useEffect } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import KakaoMap from "../../components/common/KakaoMap";
@@ -22,7 +20,7 @@ interface FormData {
     facilities: Facilities;
 }
 
-const EditCafePage: React.FC = () => {
+const EditCafePage = (): JSX.Element | null => {
     const { id } = useParams<{ id: string }>();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
@@ -49,7 +47,7 @@ const EditCafePage: React.FC = () => {
                 setIsAuthenticated(response.data.success);
 
                 const cafeData = await getCafeById(Number(id));
-                const { name, address, description, facilities, photos } = cafeData.data.data;
+                const { name, address, description, facilities } = cafeData.data.data;
 
                 const parsedFacilities: Facilities = {
                     wifi: facilities.wifi === "true" || facilities.wifi === true,

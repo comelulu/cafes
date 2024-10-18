@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface CafeFormData {
     name: string;
@@ -11,7 +11,7 @@ interface CafeFormProps {
     onSubmit: (data: CafeFormData) => void;
 }
 
-const CafeForm: React.FC<CafeFormProps> = ({ onSubmit }) => {
+const CafeForm = ({ onSubmit }: CafeFormProps): JSX.Element => {
     const [name, setName] = useState<string>("");
     const [address, setAddress] = useState<string>("");
     const [description, setDescription] = useState<string>("");

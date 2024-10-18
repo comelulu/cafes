@@ -1,7 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-const NotFoundPage: React.FC = () => {
+const NotFoundPage = (): JSX.Element => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
             <h1 className="text-6xl font-bold mb-4 animate-bounce">404</h1>

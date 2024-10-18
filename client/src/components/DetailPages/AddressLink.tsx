@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface AddressLinkProps {
-    children: ReactNode; 
+    children: ReactNode;
     className?: string;
 }
 
-export default function AddressLink({ children, className = "my-3 block" }: AddressLinkProps) {
+export default function AddressLink({ children, className = "my-3 block" }: AddressLinkProps): JSX.Element {
     const linkClass = `${className} flex gap-1 font-semibold`;
 
     return (

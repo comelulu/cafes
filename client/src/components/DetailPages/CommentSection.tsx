@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { addComment } from "../../api";
 
@@ -12,7 +12,7 @@ interface CommentSectionProps {
     cafeId: number;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ comments = [], cafeId }) => {
+const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Element => {
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
     const [newComment, setNewComment] = useState<string>("");
     const [username, setUsername] = useState<string>("");

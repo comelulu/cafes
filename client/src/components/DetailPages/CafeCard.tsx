@@ -1,10 +1,9 @@
-import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useFavorite } from "../../context/FavoriteProvider";
 
 interface Cafe {
-    id: string;          
+    id: string;
     name: string;
     photos: string[];
     address: string;
@@ -14,7 +13,7 @@ interface CafeCardProps {
     cafe: Cafe;
 }
 
-const CafeCard: React.FC<CafeCardProps> = ({ cafe }) => {
+const CafeCard = ({ cafe }: CafeCardProps): JSX.Element => {
     const { favorites, toggleFavorite } = useFavorite();
     const isFavorite = favorites.includes(cafe.id);
 

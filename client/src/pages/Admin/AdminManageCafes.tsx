@@ -1,6 +1,4 @@
-// src/pages/AdminManageCafes.tsx
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCafes, deleteCafe } from "../../api";
 
@@ -11,7 +9,7 @@ interface Cafe {
     description: string;
 }
 
-const AdminManageCafes: React.FC = () => {
+const AdminManageCafes = (): JSX.Element => {
     const [cafes, setCafes] = useState<Cafe[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");

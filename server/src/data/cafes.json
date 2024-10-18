@@ -573,27 +573,5 @@
       "https://res.cloudinary.com/dmohm7uen/image/upload/v1728980178/qmppwhlm9ggijcoikcke.png"
     ],
     "likes": 0
-  },
-  {
-    "id": 1729007327004,
-    "name": "Danang",
-    "address": "대전 동구 판교3길 4",
-    "description": "어디민 클라이언트",
-    "facilities": {
-      "wifi": false,
-      "parking": true,
-      "bathroom": false,
-      "petFriendly": false,
-      "photoSpot": false,
-      "cozySeats": true,
-      "suitableForDate": true
-    },
-    "comments": [],
-    "photos": [
-      "https://res.cloudinary.com/dmohm7uen/image/upload/v1729007328/qsibjxadluq3fon58yxe.jpg",
-      "https://res.cloudinary.com/dmohm7uen/image/upload/v1729007328/elbk9chcgyk703pmxkcr.jpg",
-      "https://res.cloudinary.com/dmohm7uen/image/upload/v1729007327/ngl7ndonpecbbkbw4wis.jpg"
-    ],
-    "likes": 0
   }
 ]

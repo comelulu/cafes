@@ -16,7 +16,7 @@ declare global {
     }
 }
 
-const KakaoMap: React.FC<KakaoMapProps> = ({ setFormData, formData }) => {
+const KakaoMap = ({ setFormData, formData }: KakaoMapProps): JSX.Element => {
     const [map, setMap] = useState<any>(null);
     const [marker, setMarker] = useState<any>(null);
 
@@ -52,7 +52,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ setFormData, formData }) => {
                             marker.setPosition(currentPos);
                             marker.setMap(map);
 
-                            // Update formData correctly with function syntax
                             setFormData((prevFormData) => ({
                                 ...prevFormData,
                                 address: addrData.address,
@@ -80,6 +79,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ setFormData, formData }) => {
             ></div>
         </div>
     );
-}
+};
 
 export default KakaoMap;

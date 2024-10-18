@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddressLink from "../../components/DetailPages/AddressLink";
 import { getCafeById } from "../../api";
@@ -18,7 +18,7 @@ interface Cafe {
     comments: { user: string; text: string }[];
 }
 
-const CafeDetailPage: React.FC = () => {
+const CafeDetailPage = (): JSX.Element | null => {
     const { id } = useParams<{ id: string }>();
     const [cafe, setCafe] = useState<Cafe | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -32,7 +32,7 @@ const CafeDetailPage: React.FC = () => {
             setError(null);
             try {
                 if (id) {
-                    const response = await getCafeById(parseInt(id)); // Ensure `id` is parsed to number if required
+                    const response = await getCafeById(parseInt(id));
                     setCafe(response.data.data as unknown as Cafe);
                 }
             } catch (error) {

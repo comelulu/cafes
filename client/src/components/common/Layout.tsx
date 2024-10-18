@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Outlet, Link } from "react-router-dom";
 import Container from "./Container";
 import { useFavorite } from "../../context/FavoriteProvider";
@@ -19,7 +19,7 @@ interface FavoriteListProps {
     details: Cafe[];
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isDetailPage }) => {
+const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const [showFavorites, setShowFavorites] = useState<boolean>(false);
     const { favorites, toggleFavorite } = useFavorite();
     const [favoriteDetails, setFavoriteDetails] = useState<Cafe[]>([]);
@@ -31,21 +31,19 @@ const Navbar: React.FC<NavbarProps> = ({ isDetailPage }) => {
         setShowFavorites((prev) => !prev);
     }, []);
 
-    // Fetch favorite cafe details when favorites change
     useEffect(() => {
         const fetchFavoritesDetails = async () => {
             const details = await Promise.all(
                 favorites.map(async (favoriteId) => {
-                    const id = Number(favoriteId); // Convert to number if necessary
+                    const id = Number(favoriteId); 
                     if (favoriteCache.has(id)) {
-                        return favoriteCache.get(id)!; // Use cached data
+                        return favoriteCache.get(id)!;
                     } else {
                         const response = await getCafeById(id);
                         const data = response.data.data as unknown as Cafe;
 
-                        // Ensure data has all required fields or handle optional fields
-                        if (data && data.name && data.address) { // Check if all required fields are present
-                            favoriteCache.set(id, data); // Add to cache
+                        if (data && data.name && data.address) { 
+                            favoriteCache.set(id, data);
                             return data;
                         } else {
                             throw new Error("Invalid cafe data received");
@@ -63,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDetailPage }) => {
         }
     }, [favorites, favoriteCache]);
 
-    const FavoriteList: React.FC<FavoriteListProps> = ({ details }) => (
+    const FavoriteList = ({ details }: FavoriteListProps): JSX.Element => (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
             <h4 className="px-4 py-2 font-semibold text-gray-700">Your Favorites</h4>
             <ul>
@@ -164,7 +162,7 @@ interface LayoutProps {
     isDetailPage: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ isDetailPage }) => (
+const Layout = ({ isDetailPage }: LayoutProps): JSX.Element => (
     <div>
         <Navbar isDetailPage={isDetailPage} />
         <Outlet />
