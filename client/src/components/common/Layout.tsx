@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Outlet, Link } from "react-router-dom";
-import Container from "./Container";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useFavorite } from "../../context/FavoriteProvider";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaHeart, FaChevronDown, FaExchangeAlt } from "react-icons/fa";
 import { getCafeById } from "../../api";
+import NavbarContainer from "./NavbarContainer";
 
 interface Cafe {
     id: string;
@@ -15,17 +15,42 @@ interface NavbarProps {
     isDetailPage: boolean;
 }
 
-interface FavoriteListProps {
-    details: Cafe[];
-}
-
 const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [filterType, setFilterType] = useState<"name" | "address">("name");
+    const [filterQuery, setFilterQuery] = useState("");
+    const [selectedSummary, setSelectedSummary] = useState<string>("");
+    const [showFilterModal, setShowFilterModal] = useState(false);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isSpecialRoute = ["/login", "/admin"].some(route => location.pathname.startsWith(route));
+
     const { favorites, toggleFavorite } = useFavorite();
     const [favoriteDetails, setFavoriteDetails] = useState<Cafe[]>([]);
-
-    // Cache for fetched favorite cafe details
     const favoriteCache = useMemo(() => new Map<number, Cafe>(), []);
+
+    useEffect(() => {
+        const storedFilterType = localStorage.getItem("filterType");
+        const storedFilterQuery = localStorage.getItem("filterQuery");
+        const storedSummary = localStorage.getItem("selectedSummary");
+
+        if (storedFilterType) setFilterType(storedFilterType as "name" | "address");
+        if (storedFilterQuery) setFilterQuery(storedFilterQuery);
+        if (storedSummary) setSelectedSummary(storedSummary);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("filterType", filterType);
+    }, [filterType]);
+
+    useEffect(() => {
+        localStorage.setItem("filterQuery", filterQuery);
+    }, [filterQuery]);
+
+    useEffect(() => {
+        localStorage.setItem("selectedSummary", selectedSummary);
+    }, [selectedSummary]);
 
     const toggleFavorites = useCallback(() => {
         setShowFavorites((prev) => !prev);
@@ -35,14 +60,14 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
         const fetchFavoritesDetails = async () => {
             const details = await Promise.all(
                 favorites.map(async (favoriteId) => {
-                    const id = Number(favoriteId); 
+                    const id = Number(favoriteId);
                     if (favoriteCache.has(id)) {
                         return favoriteCache.get(id)!;
                     } else {
                         const response = await getCafeById(id);
                         const data = response.data.data as unknown as Cafe;
 
-                        if (data && data.name && data.address) { 
+                        if (data && data.name && data.address) {
                             favoriteCache.set(id, data);
                             return data;
                         } else {
@@ -61,112 +86,182 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
         }
     }, [favorites, favoriteCache]);
 
-    const FavoriteList = ({ details }: FavoriteListProps): JSX.Element => (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-            <h4 className="px-4 py-2 font-semibold text-gray-700">Your Favorites</h4>
-            <ul>
-                {details.length > 0 ? (
-                    details.map((favorite) => (
-                        <li
-                            key={favorite.id}
-                            className="px-4 py-2 flex items-center justify-between hover:bg-gray-100"
-                        >
-                            <Link
-                                to={`/cafes/${favorite.id}`}
-                                className="text-gray-600"
-                                onClick={() => setShowFavorites(false)}
-                            >
-                                {favorite.name}
-                            </Link>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleFavorite(favorite.id);
-                                }}
-                                className="ml-2 text-gray-400 hover:text-red-600"
-                            >
-                                <FaTimes />
-                            </button>
-                        </li>
-                    ))
-                ) : (
-                    <li className="px-4 py-2 text-gray-600">No favorites added</li>
-                )}
-            </ul>
-        </div>
-    );
+    useEffect(() => {
+        if (isSpecialRoute) return;
+
+        const urlParams = new URLSearchParams();
+        if (selectedSummary) {
+            urlParams.set("summary", selectedSummary);
+        }
+        if (filterQuery.trim()) {
+            urlParams.set(filterType, filterQuery);
+        }
+
+        navigate(`/?${urlParams.toString()}`, { replace: true });
+    }, [filterQuery, filterType, selectedSummary, navigate, isSpecialRoute]);
+
+    const handleFilterApply = () => {
+        setShowFilterModal(false);
+    };
 
     return (
-        <Container>
-            <header
-                className={`flex items-center justify-between py-4 border-b border-gray-200 ${isDetailPage ? "max-w-screen-xl mx-auto" : ""
-                    }`}
-            >
-                <Link to="/" className="flex items-center gap-1">
-                    {/* Left - Logo */}
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-8 h-8 text-brown-600"
-                    >
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-                    </svg>
-                    <span className="font-bold text-xl text-brown-700">CafeShare</span>
+        <NavbarContainer>
+            <header className={`flex items-center justify-between py-4 px-6 ${isDetailPage ? "max-w-screen-xl mx-auto" : ""}`}>
+                <Link to="/" className="flex items-center gap-2">
+                    <img src="/logo.png" alt="Cafe Spot Logo" className="w-24 h-14" />
                 </Link>
 
-                {/* Right - User Menu & Favorites */}
-                <div className="relative">
-                    <button
-                        onClick={toggleFavorites}
-                        className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 hover:shadow-md transition-shadow duration-200"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6 text-gray-700"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                            />
-                        </svg>
-                        <div className="bg-gray-500 text-white rounded-full p-1">
+                <div className="hidden md:flex items-center gap-2 mx-4 flex-1 justify-center">
+                    <div className="relative w-80">
+                        <input
+                            type="text"
+                            placeholder={`Search by ${filterType === "name" ? "Name" : "Location"}`}
+                            value={filterQuery}
+                            onChange={(e) => setFilterQuery(e.target.value)}
+                            className="w-full px-4 py-2 text-gray-500 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-yellow-500 placeholder-gray-400"
+                        />
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
-                                fill="currentColor"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
                                 className="w-5 h-5"
                             >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-                                    clipRule="evenodd"
-                                />
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
                             </svg>
-                        </div>
+                        </span>
+                    </div>
+
+                    <button
+                        onClick={() => setShowFilterModal(true)}
+                        className="flex items-center gap-1 px-4 py-2 border border-yellow-500 text-yellow-600 rounded-full hover:bg-yellow-50"
+                    >
+                        Filter <FaExchangeAlt className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <div className="relative flex items-center gap-4">
+                    <button
+                        onClick={toggleFavorites}
+                        className="font-medium bg-warning text-primary flex items-center gap-1 px-4 py-3 rounded-lg hover:bg-secondary transition-shadow duration-200"
+                    >
+                        My <FaHeart className="text-primary" />s List <FaChevronDown className="text-primary" />
                     </button>
 
-                    {showFavorites && <FavoriteList details={favoriteDetails} />}
+                    {showFavorites && (
+                        <div className="absolute right-0 top-full mt-1 w-64 bg-[#F8E1C3] shadow-lg z-50 p-4 flex flex-col rounded-lg">
+                            <div className="flex justify-between items-center mb-4">
+                                <h4 className="text-lg font-semibold text-[#B37E2E] flex items-center gap-1">My <FaHeart className="text-primary" />Likes List</h4>
+                                <button onClick={() => setShowFavorites(false)}>
+                                    <FaTimes className="text-[#B37E2E]" />
+                                </button>
+                            </div>
+                            <ul className="flex-1 overflow-y-auto">
+                                {favoriteDetails.length > 0 ? (
+                                    favoriteDetails.map((favorite) => (
+                                        <li key={favorite.id} className="flex items-center justify-between mb-3">
+                                            <Link
+                                                to={`/cafes/${favorite.id}`}
+                                                className="text-black font-medium"
+                                                onClick={() => setShowFavorites(false)}
+                                            >
+                                                {favorite.name}
+                                            </Link>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleFavorite(favorite.id);
+                                                }}
+                                                className="text-[#B37E2E]"
+                                            >
+                                                <FaHeart />
+                                            </button>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li className="text-gray-600">No favorites added</li>
+                                )}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </header>
-        </Container>
+
+            {showFilterModal && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg w-80 p-6 shadow-lg">
+                        <h3 className="text-xl font-semibold mb-4">Apply Filters</h3>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
+                            <select
+                                value={selectedSummary}
+                                onChange={(e) => setSelectedSummary(e.target.value)}
+                                className="outline-none block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            >
+                                <option value="">Select Summary</option>
+                                {["Suburban", "Large", "Dessert", "Rooftop", "BookCafe", "ScenicView", "CulturalComplex", "ArchitectureTheme"].map((summary) => (
+                                    <option key={summary} value={summary}>
+                                        {summary}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Filter By</label>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setFilterType("name")}
+                                    className={`px-4 py-2 rounded-md ${filterType === "name" ? "bg-yellow-500 text-white" : "bg-gray-100"}`}
+                                >
+                                    Name
+                                </button>
+                                <button
+                                    onClick={() => setFilterType("address")}
+                                    className={`px-4 py-2 rounded-md ${filterType === "address" ? "bg-yellow-500 text-white" : "bg-gray-100"}`}
+                                >
+                                    Location
+                                </button>
+                            </div>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setShowFilterModal(false)}
+                                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleFilterApply}
+                                className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                            >
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </NavbarContainer>
     );
 };
+
 
 interface LayoutProps {
     isDetailPage: boolean;
 }
 
-const Layout = ({ isDetailPage }: LayoutProps): JSX.Element => (
-    <div>
-        <Navbar isDetailPage={isDetailPage} />
-        <Outlet />
-    </div>
-);
+const Layout = ({ isDetailPage }: LayoutProps): JSX.Element => {
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith("/admin");
+
+    return (
+        <div>
+            {!isAdminRoute && <Navbar isDetailPage={isDetailPage} />}
+            <Outlet />
+        </div>
+    );
+};
 
 export default Layout;

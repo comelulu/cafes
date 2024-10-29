@@ -58,5 +58,5 @@ export default function Map({ cafeAddress }: MapProps) {
         }
     }, [address]);
 
-    return <div id="map" className="w-full h-[400px] rounded-lg" />;
+    return <div id="map" className="w-full h-[430px] rounded-lg" />;
 }

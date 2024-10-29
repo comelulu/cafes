@@ -9,6 +9,7 @@ interface Cafe {
     address: string;
     description: string;
     facilities: Record<string, unknown>;
+    summaries: Record<string, unknown>;
     comments: Array<{ user: string; text: string }>;  // comments 속성 정의
     photos: string[];
     likes: number;
@@ -23,8 +24,8 @@ cloudinary.config({
 // 카페 생성
 export const createCafe = async (req: Request, res: Response) => {
     try {
-        const { name, address, description, facilities } = req.body;
-        if (!name || !address || !description) {
+        const { name, address, description, facilities, summaries } = req.body;
+        if (!name || !address || !description || !summaries) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
 
@@ -45,12 +46,14 @@ export const createCafe = async (req: Request, res: Response) => {
 
         // 시설 JSON 문자열을 객체로 변환
         const facilitiesData = JSON.parse(facilities);
+        const summariesData = JSON.parse(summaries);
         const newCafe: Cafe = {
             id: Date.now(),
             name,
             address,
             description,
             facilities: facilitiesData,
+            summaries: summariesData,
             comments: [],
             photos: photoUrls,
             likes: 0,
@@ -71,7 +74,20 @@ export const createCafe = async (req: Request, res: Response) => {
 // 모든 카페 조회
 export const getAllCafes = (req: Request, res: Response) => {
     try {
-        const cafes = loadCafes();
+        const { name, address } = req.query;
+        let cafes = loadCafes();
+
+        // Show cafes that match either name or address, even partially
+        if (name || address) {
+            cafes = cafes.filter((cafe) => {
+                const nameMatch = name ? cafe.name.toLowerCase().includes((name as string).toLowerCase()) : false;
+                const addressMatch = address ? cafe.address.toLowerCase().includes((address as string).toLowerCase()) : false;
+
+                // Return true if either name or address matches
+                return nameMatch || addressMatch;
+            });
+        }
+
         res.status(200).json({ success: true, data: cafes });
     } catch (error) {
         console.log("error: ", error);
@@ -79,6 +95,7 @@ export const getAllCafes = (req: Request, res: Response) => {
         res.status(500).json({ success: false, message });
     }
 };
+
 
 // 특정 카페 조회
 export const getCafeById = (req: Request, res: Response) => {
@@ -168,3 +185,4 @@ export const addComment = (req: Request, res: Response) => {
         res.status(500).json({ success: false, message });
     }
 };
+

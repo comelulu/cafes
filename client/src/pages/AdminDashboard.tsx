@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { checkAuth, getCafes } from "../../api";
+import { checkAuth, getCafes } from "../api";
 
 const AdminDashboard = (): JSX.Element => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

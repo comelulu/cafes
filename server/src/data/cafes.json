@@ -35,6 +35,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -77,6 +87,16 @@
       "photoSpot": false,
       "cozySeats": true,
       "suitableForDate": false
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -111,6 +131,16 @@
       "photoSpot": true,
       "cozySeats": false,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -149,6 +179,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": false
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -175,6 +215,16 @@
       "photoSpot": false,
       "cozySeats": true,
       "suitableForDate": false
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -205,6 +255,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -246,6 +306,16 @@
       "photoSpot": false,
       "cozySeats": true,
       "suitableForDate": false
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -276,6 +346,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -302,6 +382,16 @@
       "photoSpot": false,
       "cozySeats": true,
       "suitableForDate": false
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -328,6 +418,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -358,6 +458,16 @@
       "photoSpot": false,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -384,6 +494,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -414,6 +534,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -440,6 +570,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -470,6 +610,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -500,6 +650,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -530,6 +690,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -545,6 +715,16 @@
       "photoSpot": false,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     },
     "comments": [],
     "photos": [
@@ -566,6 +746,16 @@
       "photoSpot": true,
       "cozySeats": false,
       "suitableForDate": false
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     },
     "comments": [],
     "photos": [

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminLogin, checkAuth } from "../../api";
+import { adminLogin, checkAuth } from "../api";
 
 const LoginPage = (): JSX.Element => {
     const [username, setUsername] = useState<string>("");

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getCafes, deleteCafe } from "../../api";
+import { getCafes, deleteCafe } from "../api";
 
 interface Cafe {
     id: number;

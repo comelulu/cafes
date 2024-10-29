@@ -1,15 +1,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-
-// Define the type for the context value
 interface FavoriteContextType {
   favorites: string[];
   toggleFavorite: (cafeId: string) => void;
 }
 
-// Create the context with an initial undefined value
 const FavoriteContext = createContext<FavoriteContextType | undefined>(undefined);
 
-// Custom hook to use the Favorite context
 export const useFavorite = (): FavoriteContextType => {
   const context = useContext(FavoriteContext);
   if (!context) {
@@ -18,7 +14,6 @@ export const useFavorite = (): FavoriteContextType => {
   return context;
 };
 
-// Define the props for FavoriteProvider
 interface FavoriteProviderProps {
   children: ReactNode;
 }
@@ -33,12 +28,10 @@ export const FavoriteProvider = ({ children }: FavoriteProviderProps) => {
     }
   });
 
-  // Function to save favorites to localStorage
   const saveFavoritesToLocalStorage = (favorites: string[]) => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   };
 
-  // Update localStorage whenever favorites change
   useEffect(() => {
     saveFavoritesToLocalStorage(favorites);
   }, [favorites]);

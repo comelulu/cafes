@@ -40,9 +40,9 @@ const adminClient = axios.create({
     withCredentials: true,
 });
 
-// Cafe-related APIs
-export const getCafes = (): Promise<AxiosResponse<{ success: boolean; data: Cafe[] }>> => {
-    return apiClient.get("/api/cafes");
+export const getCafes = async (filters?: Record<string, string>) => {
+    const params = filters ? { params: filters } : {};
+    return apiClient.get("/api/cafes", params);
 };
 
 export const getCafeById = (id: number): Promise<AxiosResponse<{ success: boolean; data: Cafe }>> => {

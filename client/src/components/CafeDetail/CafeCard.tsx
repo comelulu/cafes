@@ -28,10 +28,16 @@ const CafeCard = ({ cafe }: CafeCardProps): JSX.Element => {
                         className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-300"
                     />
                 </Link>
+            </div>
 
-                {/* Heart Icon */}
+            <div className="flex items-center justify-between mt-2">
+                <Link to={`/cafes/${cafe.id}`}>
+                    <div className="font-semibold text-lg">{cafe.name}</div>
+                    <div className="font-light text-neutral-500">{cafe.address}</div>
+                </Link>
+
                 <button
-                    className="absolute top-3 right-3 p-1"
+                    className="p-1"
                     onClick={(e) => {
                         e.stopPropagation();
                         toggleFavorite(cafe.id);
@@ -40,21 +46,17 @@ const CafeCard = ({ cafe }: CafeCardProps): JSX.Element => {
                 >
                     {isFavorite ? (
                         <AiFillHeart
-                            size={28}
-                            className="fill-rose-500 transition-transform duration-200 hover:scale-110"
+                            size={24}
+                            className="fill-primary transition-transform duration-200 hover:scale-110"
                         />
                     ) : (
                         <AiOutlineHeart
-                            size={28}
+                            size={24}
                             className="fill-neutral-500/70 transition-transform duration-200 hover:scale-110"
                         />
                     )}
                 </button>
             </div>
-            <Link to={`/cafes/${cafe.id}`}>
-                <div className="font-semibold text-lg mt-2">{cafe.name}</div>
-                <div className="font-light text-neutral-500">{cafe.address}</div>
-            </Link>
         </div>
     );
 };

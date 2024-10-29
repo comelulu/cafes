@@ -1,17 +1,16 @@
 // App.js
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import CafeListPage from "./pages/Cafe/CafeListPage";
-import CafeDetailPage from "./pages/Cafe/CafeDetailPage";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import CreateCafePage from "./pages/Cafe/CreateCafePage";
-import LoginPage from "./pages/Admin/LoginPage";
-import AdminManageCafes from "./pages/Admin/AdminManageCafes";
+import CafeListPage from "./pages/CafeListPage";
+import CafeDetailPage from "./pages/CafeDetailPage";
+import AdminDashboard from "./pages/AdminDashboard";
+import CreateCafePage from "./pages/CafeCreatePage";
+import LoginPage from "./pages/LoginPage";
+import AdminManageCafes from "./pages/AdminManageCafes";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 import NotFoundPage from "./components/NotFoundPage";
-import Layout from "./components/common/Layout";
+import Layout from "./components/Common/Layout";
 import { FavoriteProvider } from "./context/FavoriteProvider";
-import EditCafePage from "./pages/Cafe/EditCafePage";
+import EditCafePage from "./pages/CafeEditPage";
 
 const routes = [
   {
