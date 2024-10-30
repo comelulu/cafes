@@ -18,7 +18,7 @@ const CafeCard = ({ cafe }: CafeCardProps): JSX.Element => {
     const isFavorite = favorites.includes(cafe.id);
 
     return (
-        <div className="col-span-1 cursor-pointer group">
+        <div className="flex-col cursor-pointer group flex">
             <div className="aspect-square w-full relative overflow-hidden rounded-xl">
                 <Link to={`/cafes/${cafe.id}`}>
                     <img
@@ -30,33 +30,32 @@ const CafeCard = ({ cafe }: CafeCardProps): JSX.Element => {
                 </Link>
             </div>
 
-            <div className="flex items-center justify-between mt-2">
-                <Link to={`/cafes/${cafe.id}`}>
-                    <div className="font-semibold text-lg">{cafe.name}</div>
-                    <div className="font-light text-neutral-500">{cafe.address}</div>
-                </Link>
-
-                <button
-                    className="p-1"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(cafe.id);
-                    }}
-                    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                >
-                    {isFavorite ? (
-                        <AiFillHeart
-                            size={24}
-                            className="fill-primary transition-transform duration-200 hover:scale-110"
-                        />
-                    ) : (
-                        <AiOutlineHeart
-                            size={24}
-                            className="fill-neutral-500/70 transition-transform duration-200 hover:scale-110"
-                        />
-                    )}
-                </button>
-            </div>
+            <Link className="flex flex-col" to={`/cafes/${cafe.id}`}>
+                <div className="font-semibold text-[15px] flex items-center justify-between">
+                    <span>{cafe.name}</span>
+                    <button
+                        className="p-1"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            toggleFavorite(cafe.id);
+                        }}
+                        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                    >
+                        {isFavorite ? (
+                            <AiFillHeart
+                                size={24}
+                                className="fill-primary transition-transform duration-200 hover:scale-110"
+                            />
+                        ) : (
+                            <AiOutlineHeart
+                                size={24}
+                                className="fill-neutral-500/70 transition-transform duration-200 hover:scale-110"
+                            />
+                        )}
+                    </button>
+                </div>
+                <div className="font-light text-neutral-500 text-[14px]">{cafe.address}</div>
+            </Link>
         </div>
     );
 };

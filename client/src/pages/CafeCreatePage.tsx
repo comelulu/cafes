@@ -35,6 +35,18 @@ interface FormData {
     summaries: Summaries;
 }
 
+// Define Korean labels for summaries
+const summaryLabels: { [key in keyof Summaries]: string } = {
+    suburban: "근교",
+    large: "대형",
+    dessert: "디저트",
+    rooftop: "루프탑",
+    bookCafe: "북카페",
+    scenicView: "뷰맛집",
+    culturalComplex: "복합문화",
+    architectureTheme: "건축/테마",
+};
+
 const CreateCafePage = (): JSX.Element | null => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
@@ -112,7 +124,7 @@ const CreateCafePage = (): JSX.Element | null => {
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-10">
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-12 md:p-16">
-                <h1 className="text-4xl font-semibold text-center text-[#002D74] mb-8">Create New Cafe</h1>
+                <h1 className="text-4xl font-semibold text-center text-darkBrown mb-8">Create New Cafe</h1>
                 {successMessage && <p className="text-green-500 text-center mb-6">{successMessage}</p>}
                 <CafeForm
                     formData={formData}
@@ -122,6 +134,7 @@ const CreateCafePage = (): JSX.Element | null => {
                     previews={previews}
                     setImages={setImages}
                     setPreviews={setPreviews}
+                    summaryLabels={summaryLabels}
                 />
             </div>
         </div>

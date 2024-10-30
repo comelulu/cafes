@@ -71,7 +71,9 @@ const KakaoMap = ({ setFormData, formData }: KakaoMapProps): JSX.Element => {
                 readOnly
                 onClick={onClickAddr}
                 placeholder="주소를 클릭하여 검색하세요"
+                value={formData.address || ""}
             />
+
             <div
                 id="map"
                 className="w-full mt-2"

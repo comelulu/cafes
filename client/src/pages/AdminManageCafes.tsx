@@ -1,3 +1,4 @@
+// components/Admin/AdminManageCafes.tsx
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCafes, deleteCafe } from "../api";
@@ -19,7 +20,8 @@ const AdminManageCafes = (): JSX.Element => {
         const fetchCafes = async () => {
             try {
                 const response = await getCafes();
-                setCafes(response.data.data);
+                // Sort cafes to show the latest added at the top
+                setCafes(response.data.data.sort((a: Cafe, b: Cafe) => b.id - a.id));
             } catch (err) {
                 console.error("Error fetching cafes:", err);
                 setError("Failed to load cafes. Please try again later.");
@@ -52,25 +54,27 @@ const AdminManageCafes = (): JSX.Element => {
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-8">
-                <h1 className="text-2xl font-semibold text-center mb-6">Manage Cafes</h1>
+                <h1 className="text-2xl font-semibold text-darkBrown text-center mb-6">Manage Cafes</h1>
                 <div className="flex flex-col gap-4">
                     {cafes.map((cafe) => (
                         <div key={cafe.id} className="p-4 border border-gray-200 rounded-md flex justify-between items-center bg-white shadow-sm">
                             <div>
-                                <h3 className="text-lg font-medium text-gray-700">{cafe.name}</h3>
-                                <p className="text-gray-500">{cafe.address}</p>
-                                <p className="text-gray-400 text-sm">{cafe.description}</p>
+                                <h3 className="text-lg font-medium text-darkBrown">{cafe.name}</h3>
+                                <p className="text-gray-700">{cafe.address}</p>
+                                <p className="text-gray-400 text-sm">
+                                    {cafe.description.length > 100 ? `${cafe.description.slice(0, 100)}...` : cafe.description}
+                                </p>
                             </div>
                             <div className="flex gap-2">
                                 <Link
                                     to={`/admin/edit-cafe/${cafe.id}`}
-                                    className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition duration-200 text-sm font-medium"
+                                    className="px-4 py-2 bg-secondary text-primary rounded-md  text-sm font-medium"
                                 >
                                     Edit
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(cafe.id)}
-                                    className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition duration-200 text-sm font-medium"
+                                    className="px-4 py-2 bg-primary text-secondary rounded-md text-sm font-medium"
                                 >
                                     Delete
                                 </button>

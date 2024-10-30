@@ -9,7 +9,7 @@ interface Cafe {
     address: string;
     description: string;
     facilities: Record<string, unknown>;
-    summaries: Record<string, unknown>;
+    summaries: Record<string, boolean>;
     comments: Array<{ user: string; text: string }>;  // comments 속성 정의
     photos: string[];
     likes: number;
@@ -74,19 +74,24 @@ export const createCafe = async (req: Request, res: Response) => {
 // 모든 카페 조회
 export const getAllCafes = (req: Request, res: Response) => {
     try {
-        const { name, address } = req.query;
+        const { query, summary } = req.query;
         let cafes = loadCafes();
 
-        // Show cafes that match either name or address, even partially
-        if (name || address) {
+        if (summary) {
             cafes = cafes.filter((cafe) => {
-                const nameMatch = name ? cafe.name.toLowerCase().includes((name as string).toLowerCase()) : false;
-                const addressMatch = address ? cafe.address.toLowerCase().includes((address as string).toLowerCase()) : false;
-
-                // Return true if either name or address matches
-                return nameMatch || addressMatch;
+                const summaries = cafe.summaries as Record<string, boolean>;
+                return summaries[summary as string] === true;
             });
         }
+
+        if (query) {
+            cafes = cafes.filter((cafe) => {
+                const combinedInfo = `${cafe.name} ${cafe.address}`.toLowerCase();
+                console.log(combinedInfo.includes((query as string).toLowerCase()));
+                return combinedInfo.includes((query as string).toLowerCase());
+            });
+        }
+
 
         res.status(200).json({ success: true, data: cafes });
     } catch (error) {
@@ -95,6 +100,7 @@ export const getAllCafes = (req: Request, res: Response) => {
         res.status(500).json({ success: false, message });
     }
 };
+
 
 
 // 특정 카페 조회

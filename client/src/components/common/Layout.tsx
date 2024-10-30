@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useFavorite } from "../../context/FavoriteProvider";
-import { FaTimes, FaHeart, FaChevronDown, FaExchangeAlt } from "react-icons/fa";
+import { PiSlidersHorizontal } from "react-icons/pi";
+import { FaTimes, FaHeart, FaChevronDown } from "react-icons/fa";
 import { getCafeById } from "../../api";
 import NavbarContainer from "./NavbarContainer";
 
@@ -17,7 +18,6 @@ interface NavbarProps {
 
 const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const [showFavorites, setShowFavorites] = useState<boolean>(false);
-    const [filterType, setFilterType] = useState<"name" | "address">("name");
     const [filterQuery, setFilterQuery] = useState("");
     const [selectedSummary, setSelectedSummary] = useState<string>("");
     const [showFilterModal, setShowFilterModal] = useState(false);
@@ -31,25 +31,23 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const favoriteCache = useMemo(() => new Map<number, Cafe>(), []);
 
     useEffect(() => {
-        const storedFilterType = localStorage.getItem("filterType");
         const storedFilterQuery = localStorage.getItem("filterQuery");
         const storedSummary = localStorage.getItem("selectedSummary");
 
-        if (storedFilterType) setFilterType(storedFilterType as "name" | "address");
         if (storedFilterQuery) setFilterQuery(storedFilterQuery);
         if (storedSummary) setSelectedSummary(storedSummary);
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem("filterType", filterType);
-    }, [filterType]);
 
     useEffect(() => {
         localStorage.setItem("filterQuery", filterQuery);
     }, [filterQuery]);
 
     useEffect(() => {
-        localStorage.setItem("selectedSummary", selectedSummary);
+        if (selectedSummary) {
+            localStorage.setItem("selectedSummary", selectedSummary);
+        } else {
+            localStorage.removeItem("selectedSummary");
+        }
     }, [selectedSummary]);
 
     const toggleFavorites = useCallback(() => {
@@ -94,11 +92,11 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
             urlParams.set("summary", selectedSummary);
         }
         if (filterQuery.trim()) {
-            urlParams.set(filterType, filterQuery);
+            urlParams.set("query", filterQuery);
         }
 
         navigate(`/?${urlParams.toString()}`, { replace: true });
-    }, [filterQuery, filterType, selectedSummary, navigate, isSpecialRoute]);
+    }, [filterQuery, selectedSummary, navigate, isSpecialRoute]);
 
     const handleFilterApply = () => {
         setShowFilterModal(false);
@@ -115,7 +113,7 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                     <div className="relative w-80">
                         <input
                             type="text"
-                            placeholder={`Search by ${filterType === "name" ? "Name" : "Location"}`}
+                            placeholder="Search cafes"
                             value={filterQuery}
                             onChange={(e) => setFilterQuery(e.target.value)}
                             className="w-full px-4 py-2 text-gray-500 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-yellow-500 placeholder-gray-400"
@@ -139,7 +137,7 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                         onClick={() => setShowFilterModal(true)}
                         className="flex items-center gap-1 px-4 py-2 border border-yellow-500 text-yellow-600 rounded-full hover:bg-yellow-50"
                     >
-                        Filter <FaExchangeAlt className="w-5 h-5" />
+                        필터 <PiSlidersHorizontal className="w-5 h-5" />
                     </button>
                 </div>
 
@@ -192,38 +190,35 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
 
             {showFilterModal && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg w-80 p-6 shadow-lg">
-                        <h3 className="text-xl font-semibold mb-4">Apply Filters</h3>
+                    <div className="bg-white rounded-lg w-[90%] max-w-xl p-6 shadow-lg">
+                        <h3 className="text-xl font-semibold mb-4 text-gray-700">Summary</h3>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
-                            <select
-                                value={selectedSummary}
-                                onChange={(e) => setSelectedSummary(e.target.value)}
-                                className="outline-none block w-full px-4 py-2 border border-gray-300 rounded-md"
-                            >
-                                <option value="">Select Summary</option>
-                                {["Suburban", "Large", "Dessert", "Rooftop", "BookCafe", "ScenicView", "CulturalComplex", "ArchitectureTheme"].map((summary) => (
-                                    <option key={summary} value={summary}>
-                                        {summary}
-                                    </option>
+                            <div className="flex flex-wrap gap-2">
+                                {[
+                                    { display: "근교", value: "suburban" },
+                                    { display: "대형", value: "large" },
+                                    { display: "디저트", value: "dessert" },
+                                    { display: "루프탑", value: "rooftop" },
+                                    { display: "북카페", value: "bookCafe" },
+                                    { display: "뷰맛집", value: "scenicView" },
+                                    { display: "복합문화", value: "culturalComplex" },
+                                    { display: "건축/테마", value: "architectureTheme" }
+                                ].map((summary) => (
+                                    <button
+                                        key={summary.value}
+                                        onClick={() =>
+                                            setSelectedSummary((prev) =>
+                                                prev === summary.value ? "" : summary.value
+                                            )
+                                        }
+                                        className={`px-4 py-2 rounded-full border ${selectedSummary === summary.value
+                                            ? "bg-yellow-500 text-white border-yellow-500"
+                                            : "text-yellow-600 border-yellow-500"
+                                            }`}
+                                    >
+                                        {summary.display}
+                                    </button>
                                 ))}
-                            </select>
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Filter By</label>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => setFilterType("name")}
-                                    className={`px-4 py-2 rounded-md ${filterType === "name" ? "bg-yellow-500 text-white" : "bg-gray-100"}`}
-                                >
-                                    Name
-                                </button>
-                                <button
-                                    onClick={() => setFilterType("address")}
-                                    className={`px-4 py-2 rounded-md ${filterType === "address" ? "bg-yellow-500 text-white" : "bg-gray-100"}`}
-                                >
-                                    Location
-                                </button>
                             </div>
                         </div>
                         <div className="flex justify-end gap-2">
@@ -246,7 +241,6 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
         </NavbarContainer>
     );
 };
-
 
 interface LayoutProps {
     isDetailPage: boolean;

@@ -29,7 +29,7 @@ function ImageUploader({ images, previews, setImages, setPreviews }: ImageUpload
                 accept="image/*"
                 onChange={handleImageChange}
                 multiple
-                className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded-full file:bg-[#002D74] file:text-white file:font-semibold file:hover:bg-[#003366]"
+                className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded-full file:bg-primary file:text-white file:font-semibold file:hover:bg-secondary"
             />
             <div className="flex gap-4 mt-4 flex-wrap">
                 {previews.map((preview, index) => (

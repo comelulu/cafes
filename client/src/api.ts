@@ -16,6 +16,7 @@ interface Cafe {
     address: string;
     description: string;
     facilities: Record<string, boolean | string>;
+    summaries: Record<string, boolean | string>;
     comments: Comment[];
     photos: string[];
     likes: number;
@@ -27,6 +28,7 @@ interface UpdateCafeData {
     address?: string;
     description?: string;
     facilities?: Record<string, boolean | string>;
+    summaries?: Record<string, boolean | string>;
     photos?: string[];
 }
 

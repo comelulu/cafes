@@ -1,11 +1,10 @@
-// components/CafeDetail/CafeListPage.tsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getCafes } from "../api";
-import Container from "../components/Common/Container";
 import CafeList from "../components/CafeList/CafeList";
 import LoadingMessage from "../components/CafeList/LoadingMessages";
 import ErrorMessage from "../components/CafeList/ErrorMessage";
+import Container from "../components/common/Container";
 
 interface Cafe {
     id: string;
@@ -26,14 +25,14 @@ function CafeListPage(): JSX.Element {
         setError(null);
 
         const queryParams = new URLSearchParams(location.search);
-        const nameQuery = queryParams.get("name");
-        const addressQuery = queryParams.get("address");
-
-        const filterType = nameQuery ? "name" : addressQuery ? "address" : null;
-        const query = nameQuery || addressQuery;
+        const summaryQuery = queryParams.get("summary");
+        const textQuery = queryParams.get("query");
 
         try {
-            const filters = filterType && query ? { [filterType]: query } as Record<"name" | "address", string> : {};
+            const filters: Record<string, string> = {};
+            if (summaryQuery) filters["summary"] = summaryQuery;
+            if (textQuery) filters["query"] = textQuery;
+
             const response = await getCafes(filters);
             const reversedCafes = (response.data.data as Cafe[]).reverse();
 

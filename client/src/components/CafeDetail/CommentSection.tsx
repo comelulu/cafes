@@ -1,6 +1,8 @@
+// components/CommentSection.tsx
 import { useState } from "react";
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { addComment } from "../../api";
+import { BsChevronDown } from "react-icons/bs";
 
 interface Comment {
     user: string;
@@ -49,24 +51,24 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
     return (
         <div className="mt-6 mb-10">
             <div className="flex items-center mb-4">
-                <h3 className="text-xl font-semibold text-secondary">Comments</h3>
+                <h3 className="text-xl font-bold text-darkBrown">Comments</h3>
                 {isCollapsed ? (
-                    <AiOutlinePlusCircle
-                        size={24}
-                        className="ml-2 text-primary cursor-pointer hover:text-secondary transition duration-300"
+                    <AiFillPlusCircle
+                        size={28}
+                        className="ml-2 text-secondary cursor-pointer hover:text-secondary transition duration-300"
                         onClick={() => setIsCollapsed(false)}
                     />
                 ) : (
-                    <AiOutlineMinusCircle
-                        size={24}
-                        className="ml-2 text-primary cursor-pointer hover:text-secondary transition duration-300"
+                    <AiFillMinusCircle
+                        size={28}
+                        className="ml-2 text-secondary cursor-pointer hover:text-secondary transition duration-300"
                         onClick={() => setIsCollapsed(true)}
                     />
                 )}
             </div>
 
             {!isCollapsed && (
-                <div className="mt-4 p-4 bg-white border border-gray-100 rounded-md shadow-sm space-y-2">
+                <div className="mt-4 p-4 bg-white border border-secondary rounded-md shadow-sm space-y-4 mb-6">
                     {error && (
                         <p className="text-red-500 text-sm font-semibold">{error}</p>
                     )}
@@ -76,18 +78,18 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                             placeholder="ID"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="outline-none flex-1 border border-primary rounded-md p-2 focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            className="outline-none flex-1 border border-secondary rounded-md p-2 focus:ring-2 focus:ring-secondary focus:border-transparent transition"
                         />
                         <input
                             type="password"
                             placeholder="PW"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="outline-none flex-1 border border-primary rounded-md p-2 focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            className="outline-none flex-1 border border-secondary rounded-md p-2 focus:ring-2 focus:ring-secondary focus:border-transparent transition"
                         />
                     </div>
                     <textarea
-                        className="outline-none w-full border border-primary rounded-md p-2 focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                        className="outline-none w-full border border-secondary rounded-md p-2 focus:ring-2 focus:ring-secondary focus:border-transparent transition"
                         placeholder="Write your comment here..."
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
@@ -97,7 +99,7 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                         <span className="text-sm text-gray-400">{newComment.length}/500</span>
                         <button
                             onClick={handleAddComment}
-                            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary transition"
+                            className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-secondary-dark transition"
                         >
                             Register
                         </button>
@@ -110,15 +112,15 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                     {displayedComments.map((comment, index) => (
                         <div
                             key={index}
-                            className="p-4 bg-white border border-gray-100 rounded-md shadow-sm transition-transform transform hover:scale-105"
+                            className="p-4 bg-white border border-gray-100 rounded-md shadow-sm"
                         >
                             <div className="flex items-center mb-2">
-                                <div className="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center text-secondary font-bold">
+                                <div className="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center text-gray-600 font-bold">
                                     {comment.user.charAt(0)}
                                 </div>
-                                <p className="ml-4 font-medium text-secondary">{comment.user}</p>
+                                <p className="ml-4 font-bold text-darkBrown text-lg">{comment.user}</p>
                             </div>
-                            <p className="pl-12 text-gray-600">{comment.text}</p>
+                            <p className="pl-4 text-darkBrown text-base font-normal">{comment.text}</p>
                         </div>
                     ))}
                 </div>
@@ -126,19 +128,14 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                 <p className="text-secondary">No comments available.</p>
             )}
 
-
-
             {/* More Button */}
             {comments.length > 3 && !showAllComments && (
                 <div className="flex justify-center mt-4">
                     <button
                         onClick={() => setShowAllComments(true)}
-                        className="bg-primary text-white py-2 px-6 rounded-full hover:bg-secondary transition flex items-center gap-2 text-xl"
+                        className="relative w-full py-3 bg-[#F7E2C5] rounded-full text-[#A47B47] text-lg font-semibold flex items-center justify-center transition hover:bg-[#EFD2B1]"
                     >
-                        More
-                        <span className="bg-secondary text-white w-6 h-6 flex items-center justify-center rounded-full font-semibold">
-                            {comments.length - 3}
-                        </span>
+                        <span className="flex items-center gap-2 justify-center">More <BsChevronDown size={16} /></span>
                     </button>
                 </div>
             )}

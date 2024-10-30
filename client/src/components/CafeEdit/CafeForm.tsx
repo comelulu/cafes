@@ -1,6 +1,6 @@
 // components/CafeEdit/CafeForm.tsx
 import React from "react";
-import KakaoMap from "../Common/KakaoMap";
+import KakaoMap from "../common/KakaoMap";
 import FacilitiesCheckboxGroup from "./FacilitiesCheckboxGroup";
 
 interface Facilities {
@@ -11,6 +11,21 @@ interface Facilities {
     photoSpot: boolean;
     cozySeats: boolean;
     suitableForDate: boolean;
+    toGo: boolean;
+    delivery: boolean;
+    groupAvailable: boolean;
+    applePay: boolean;
+}
+
+interface Summaries {
+    suburban: boolean;
+    large: boolean;
+    dessert: boolean;
+    rooftop: boolean;
+    bookCafe: boolean;
+    scenicView: boolean;
+    culturalComplex: boolean;
+    architectureTheme: boolean;
 }
 
 interface FormData {
@@ -18,27 +33,42 @@ interface FormData {
     address: string;
     description: string;
     facilities: Facilities;
+    summaries: Summaries;
 }
 
 interface CafeFormProps {
     formData: FormData;
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
     onSubmit: (updatedData: FormData) => void;
+    summaryLabels: { [key in keyof Summaries]: string };
 }
 
-function CafeForm({ formData, setFormData, onSubmit }: CafeFormProps): JSX.Element {
+function CafeForm({ formData, setFormData, onSubmit, summaryLabels }: CafeFormProps): JSX.Element {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
 
         if (type === "checkbox") {
             const checked = (e.target as HTMLInputElement).checked;
-            setFormData((prevData) => ({
-                ...prevData,
-                facilities: {
-                    ...prevData.facilities,
-                    [name]: checked,
-                },
-            }));
+            setFormData((prevData) => {
+                if (name in prevData.facilities) {
+                    return {
+                        ...prevData,
+                        facilities: {
+                            ...prevData.facilities,
+                            [name]: checked,
+                        },
+                    };
+                } else if (name in prevData.summaries) {
+                    return {
+                        ...prevData,
+                        summaries: {
+                            ...prevData.summaries,
+                            [name]: checked,
+                        },
+                    };
+                }
+                return prevData;
+            });
         } else {
             setFormData((prevData) => ({
                 ...prevData,
@@ -60,7 +90,7 @@ function CafeForm({ formData, setFormData, onSubmit }: CafeFormProps): JSX.Eleme
                 placeholder="Cafe Name"
                 value={formData.name}
                 onChange={handleChange}
-                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002D74]"
+                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkBrown"
                 required
             />
 
@@ -71,15 +101,32 @@ function CafeForm({ formData, setFormData, onSubmit }: CafeFormProps): JSX.Eleme
                 placeholder="Description"
                 value={formData.description}
                 onChange={handleChange}
-                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002D74] h-48 resize-none"
+                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkBrown h-48 resize-none"
+                maxLength={100}
                 required
             />
+
+            <h2 className="text-lg font-semibold text-darkBrown">Summary</h2>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+                {Object.keys(formData.summaries).map((key) => (
+                    <label key={key} className="flex items-center">
+                        <input
+                            type="checkbox"
+                            name={key}
+                            checked={formData.summaries[key as keyof Summaries]}
+                            onChange={handleChange}
+                            className="mr-2"
+                        />
+                        {summaryLabels[key as keyof Summaries]}
+                    </label>
+                ))}
+            </div>
 
             <FacilitiesCheckboxGroup facilities={formData.facilities} handleChange={handleChange} />
 
             <button
                 type="submit"
-                className="w-full py-4 bg-[#002D74] text-white rounded-lg font-semibold hover:bg-[#003366] transition duration-300"
+                className="w-full py-4 bg-secondary text-primary rounded-lg font-semibold hover:bg-[#E7CBA6] transition duration-300"
             >
                 Update Cafe
             </button>

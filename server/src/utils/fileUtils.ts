@@ -13,6 +13,7 @@ interface Comment {
 }
 
 interface Cafe {
+  summaries: Record<string, boolean>;
   id: number;
   name: string;
   address: string;

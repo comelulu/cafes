@@ -1,5 +1,5 @@
 // components/CafeDetail/CafeLocation.tsx
-import Map from "../Common/Map";
+import Map from "../common/Map";
 
 interface CafeLocationProps {
     address: string;

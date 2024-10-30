@@ -1,8 +1,7 @@
-// components/CafeDetail/CafeDetailPage.tsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCafeById } from "../api";
-import Container from "../components/Common/Container";
+import Container from "../components/common/Container";
 import Carousel from "../components/CafeDetail/Carousel";
 import CommentSection from "../components/CafeDetail/CommentSection";
 import CafeHeader from "../components/CafeDetail/CafeHeader";
@@ -84,7 +83,7 @@ function CafeDetailPage(): JSX.Element | null {
         <Container>
             <div className="max-w-screen-xl mx-auto text-secondary">
                 <div className="flex flex-col gap-6">
-                    <CafeHeader name={cafe.name} address={cafe.address} onShare={handleShare} />
+                    <CafeHeader id={cafe.id} name={cafe.name} address={cafe.address} onShare={handleShare} />
                     <Carousel photos={cafe.photos} />
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 mt-6">
                         <div className="flex flex-col gap-4">

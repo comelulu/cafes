@@ -1,6 +1,6 @@
 // components/CafeCreate/CafeForm.tsx
 import React from "react";
-import KakaoMap from "../Common/KakaoMap";
+import KakaoMap from "../common/KakaoMap";
 import CheckboxGroup from "./CheckboxGroup";
 import ImageUploader from "./ImageUploader";
 
@@ -42,6 +42,7 @@ interface CafeFormProps {
     previews: string[];
     setImages: React.Dispatch<React.SetStateAction<File[]>>;
     setPreviews: React.Dispatch<React.SetStateAction<string[]>>;
+    summaryLabels: { [key in keyof Summaries]: string };
 }
 
 function CafeForm({
@@ -52,6 +53,7 @@ function CafeForm({
     previews,
     setImages,
     setPreviews,
+    summaryLabels,
 }: CafeFormProps): JSX.Element {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -86,15 +88,24 @@ function CafeForm({
         }
     };
 
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        if (images.length === 0) {
+            e.preventDefault();
+            alert("이미지를 최소 한 장 업로드해 주세요.");
+            return;
+        }
+        onSubmit(e); // Continue with submission if there's at least one image
+    };
+
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-6">
+        <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
             <input
                 type="text"
                 name="name"
                 placeholder="Cafe Name"
                 value={formData.name}
                 onChange={handleChange}
-                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002D74]"
+                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkBrown"
                 required
             />
 
@@ -105,18 +116,33 @@ function CafeForm({
                 placeholder="Description"
                 value={formData.description}
                 onChange={handleChange}
-                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002D74] h-48 resize-none"
+                className="p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkBrown h-48 resize-none"
                 required
             />
 
-            <CheckboxGroup title="Summary" options={formData.summaries as any} handleChange={handleChange} />
+            <h2 className="text-lg font-semibold">Summary</h2>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+                {Object.keys(formData.summaries).map((key) => (
+                    <label key={key} className="flex items-center">
+                        <input
+                            type="checkbox"
+                            name={key}
+                            checked={formData.summaries[key as keyof Summaries]}
+                            onChange={handleChange}
+                            className="mr-2"
+                        />
+                        {summaryLabels[key as keyof Summaries]}
+                    </label>
+                ))}
+            </div>
+
             <CheckboxGroup title="Facilities" options={formData.facilities as any} handleChange={handleChange} />
 
             <ImageUploader images={images} previews={previews} setImages={setImages} setPreviews={setPreviews} />
 
             <button
                 type="submit"
-                className="w-full py-4 bg-[#002D74] text-white rounded-lg font-semibold hover:bg-[#003366] transition duration-300"
+                className="w-full py-4 bg-secondary text-primary rounded-lg font-semibold transition duration-300"
             >
                 Add Cafe
             </button>

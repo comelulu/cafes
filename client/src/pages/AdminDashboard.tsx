@@ -44,16 +44,16 @@ const AdminDashboard = (): JSX.Element => {
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 md:p-12">
-                <h1 className="text-3xl font-semibold text-center text-[#002D74] mb-6">
+                <h1 className="text-3xl font-semibold text-center text-darkBrown mb-6">
                     Admin Dashboard
                 </h1>
                 {errorMessage ? (
                     <p className="text-center text-red-600 mb-6">{errorMessage}</p>
                 ) : (
                     <div className="text-center mb-6">
-                        <p className="text-lg font-bold text-gray-800">
-                            Total Cafes:{" "}
-                            <span className="text-3xl font-extrabold text-[#002D74]">
+                        <p className="text-lg font-bold text-gray-800 flex items-center justify-center gap-3">
+                            Total Cafes:
+                            <span className="text-2xl font-semibold text-gray-800">
                                 {cafeCount !== null ? cafeCount : "N/A"}
                             </span>
                         </p>
@@ -62,13 +62,13 @@ const AdminDashboard = (): JSX.Element => {
                 <div className="flex flex-col gap-4">
                     <Link
                         to="/admin/cafes"
-                        className="w-full py-3 bg-[#002D74] text-white text-center rounded-lg font-semibold hover:bg-[#003366] transition duration-300"
+                        className="w-full py-3 bg-secondary text-primary text-center rounded-lg font-semibold hover:bg-[#E4C69E] transition duration-300"
                     >
                         Manage Cafes
                     </Link>
                     <Link
                         to="/admin/create-cafe"
-                        className="w-full py-3 bg-[#002D74] text-white text-center rounded-lg font-semibold hover:bg-[#003366] transition duration-300"
+                        className="w-full py-3 bg-secondary text-primary text-center rounded-lg font-semibold hover:bg-[#E4C69E] transition duration-300"
                     >
                         Create New Cafe
                     </Link>

@@ -286,6 +286,16 @@
       "photoSpot": true,
       "cozySeats": true,
       "suitableForDate": true
+    },
+    "summaries": {
+      "suburban": false,
+      "large": false,
+      "dessert": true,
+      "rooftop": false,
+      "bookCafe": true,
+      "scenicView": false,
+      "culturalComplex": false,
+      "architectureTheme": true
     }
   },
   {
@@ -692,7 +702,7 @@
       "suitableForDate": true
     },
     "summaries": {
-      "suburban": false,
+      "suburban": true,
       "large": false,
       "dessert": true,
       "rooftop": false,

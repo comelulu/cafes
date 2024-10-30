@@ -8,7 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import AdminManageCafes from "./pages/AdminManageCafes";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 import NotFoundPage from "./components/NotFoundPage";
-import Layout from "./components/Common/Layout";
+import Layout from "./components/common/Layout";
 import { FavoriteProvider } from "./context/FavoriteProvider";
 import EditCafePage from "./pages/CafeEditPage";
 
