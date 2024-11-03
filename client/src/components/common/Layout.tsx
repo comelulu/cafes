@@ -147,7 +147,6 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                     <img src="/logo.png" alt="Cafe Spot Logo" className="w-24 h-14" />
                 </Link>
 
-                {/* Set relative positioning for the filter area */}
                 <div className="relative hidden md:flex items-center gap-2 mx-4 flex-1 justify-center">
                     <div className="relative w-80">
                         <input
@@ -155,7 +154,7 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                             placeholder="Search cafes"
                             value={filterQuery}
                             onChange={(e) => setFilterQuery(e.target.value)}
-                            className="w-full px-4 py-2 text-gray-500 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-yellow-500 placeholder-gray-400"
+                            className="w-full px-4 py-2 text-gray-500 border-b-2 border-[#B37E2E] focus:outline-none focus:border-b-2 focus:border-yellow-500 placeholder-gray-400"
                         />
                         <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <svg

@@ -53,7 +53,6 @@ const routes = [
       </ProtectedRoute>
     ),
   },
-  { path: "/login", element: <LoginPage /> },
   { path: "*", element: <NotFoundPage /> },
 ];
 
@@ -66,6 +65,10 @@ const router = createBrowserRouter([
       </FavoriteProvider>
     ),
     children: routes,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);
 

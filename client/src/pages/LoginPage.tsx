@@ -54,9 +54,9 @@ const LoginPage = (): JSX.Element => {
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 md:p-12">
-                <h2 className="text-3xl font-semibold text-center text-[#002D74] mb-6">
+                <h1 className="text-3xl font-semibold text-center text-darkBrown mb-6">
                     Admin Login
-                </h2>
+                </h1>
                 {error && <p className="text-red-600 text-center mb-6">{error}</p>}
                 <form className="flex flex-col gap-6" onSubmit={handleLogin}>
                     <input
@@ -64,7 +64,7 @@ const LoginPage = (): JSX.Element => {
                         placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002D74]"
+                        className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
                         required
                     />
                     <div className="relative w-full">
@@ -73,7 +73,7 @@ const LoginPage = (): JSX.Element => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002D74]"
+                            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
                             required
                         />
                         <span
@@ -85,7 +85,7 @@ const LoginPage = (): JSX.Element => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full py-3 bg-[#002D74] text-white rounded-lg font-semibold hover:bg-[#003366] transition duration-300"
+                        className="w-full py-3 bg-secondary text-primary rounded-lg font-semibold "
                     >
                         Login
                     </button>
