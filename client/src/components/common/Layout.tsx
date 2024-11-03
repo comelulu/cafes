@@ -193,7 +193,7 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                                         <button
                                             key={value}
                                             onClick={() => setSelectedSummary((prev) => (prev === value ? "" : value))}
-                                            className={`px-4 py-2 rounded-full border ${selectedSummary === value ? "bg-yellow-500 text-white border-primary-400" : "text-[#D1B282] border-[#D1B282]"}`}
+                                            className={`px-4 py-2 rounded-full border ${selectedSummary === value ? "bg-primary text-white border-primary-400" : "text-[#D1B282] border-[#D1B282]"}`}
                                         >
                                             {display}
                                         </button>
