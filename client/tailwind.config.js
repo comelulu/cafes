@@ -9,6 +9,9 @@ module.exports = {
         warning: "#F5DAB3",
         darkBrown: "#58473B",
       },
+      boxShadow: {
+        custom: "0px 4px 60px rgba(4, 6, 15, 0.05)",
+      },
     },
   },
   plugins: [],

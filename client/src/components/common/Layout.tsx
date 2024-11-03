@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useFavorite } from "../../context/FavoriteProvider";
 import { PiSlidersHorizontal } from "react-icons/pi";
@@ -17,10 +17,24 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
-    const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const summaryTranslations = {
+        suburban: "근교",
+        large: "대형",
+        dessert: "디저트",
+        rooftop: "루프탑",
+        bookCafe: "북카페",
+        scenicView: "뷰맛집",
+        culturalComplex: "복합문화",
+        architectureTheme: "건축/테마"
+    };
+
+    const [showFavorites, setShowFavorites] = useState(false);
     const [filterQuery, setFilterQuery] = useState("");
     const [selectedSummary, setSelectedSummary] = useState<string>("");
     const [showFilterModal, setShowFilterModal] = useState(false);
+
+    const filterModalRef = useRef<HTMLDivElement>(null);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -98,9 +112,33 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
         navigate(`/?${urlParams.toString()}`, { replace: true });
     }, [filterQuery, selectedSummary, navigate, isSpecialRoute]);
 
+    const toggleFilterModal = useCallback(() => {
+        if (!isButtonDisabled) {
+            setShowFilterModal((prev) => !prev);
+            setIsButtonDisabled(true);
+
+            setTimeout(() => {
+                setIsButtonDisabled(false);
+            }, 300);
+        }
+    }, [isButtonDisabled]);
+
     const handleFilterApply = () => {
         setShowFilterModal(false);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (filterModalRef.current && !filterModalRef.current.contains(event.target as Node)) {
+                setShowFilterModal(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <NavbarContainer>
@@ -109,7 +147,8 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                     <img src="/logo.png" alt="Cafe Spot Logo" className="w-24 h-14" />
                 </Link>
 
-                <div className="hidden md:flex items-center gap-2 mx-4 flex-1 justify-center">
+                {/* Set relative positioning for the filter area */}
+                <div className="relative hidden md:flex items-center gap-2 mx-4 flex-1 justify-center">
                     <div className="relative w-80">
                         <input
                             type="text"
@@ -134,109 +173,110 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                     </div>
 
                     <button
-                        onClick={() => setShowFilterModal(true)}
-                        className="flex items-center gap-1 px-4 py-2 border border-yellow-500 text-yellow-600 rounded-full hover:bg-yellow-50"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFilterModal();
+                        }}
+                        disabled={isButtonDisabled}
+                        className="flex items-center gap-1 px-4 py-2 border border-primary text-primary rounded-full"
                     >
-                        필터 <PiSlidersHorizontal className="w-5 h-5" />
+                        {selectedSummary ? summaryTranslations[selectedSummary as keyof typeof summaryTranslations] : "필터"}
+                        <PiSlidersHorizontal className="w-5 h-5" />
                     </button>
+
+                    {showFilterModal && (
+                        <div ref={filterModalRef} className="absolute top-full mt-2 w-auto bg-white rounded-lg shadow-lg p-4 z-50">
+                            <div className="mb-4">
+                                <div className="flex flex-wrap gap-2">
+                                    {/* Filter options */}
+                                    {Object.entries(summaryTranslations).map(([value, display]) => (
+                                        <button
+                                            key={value}
+                                            onClick={() => setSelectedSummary((prev) => (prev === value ? "" : value))}
+                                            className={`px-4 py-2 rounded-full border ${selectedSummary === value ? "bg-yellow-500 text-white border-primary-400" : "text-[#D1B282] border-[#D1B282]"}`}
+                                        >
+                                            {display}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={() => setShowFilterModal(false)}
+                                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                                >
+                                    취소
+                                </button>
+                                <button
+                                    onClick={handleFilterApply}
+                                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary"
+                                >
+                                    적용하기
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="relative flex items-center gap-4">
                     <button
                         onClick={toggleFavorites}
-                        className="font-medium bg-warning text-primary flex items-center gap-1 px-4 py-3 rounded-lg hover:bg-secondary transition-shadow duration-200"
+                        className="font-medium bg-secondary text-primary flex items-center gap-1 px-4 py-3 rounded-lg "
                     >
                         My <FaHeart className="text-primary" />s List <FaChevronDown className="text-primary" />
                     </button>
-
-                    {showFavorites && (
-                        <div className="absolute right-0 top-full mt-1 w-64 bg-[#F8E1C3] shadow-lg z-50 p-4 flex flex-col rounded-lg">
-                            <div className="flex justify-between items-center mb-4">
-                                <h4 className="text-lg font-semibold text-[#B37E2E] flex items-center gap-1">My <FaHeart className="text-primary" />Likes List</h4>
-                                <button onClick={() => setShowFavorites(false)}>
-                                    <FaTimes className="text-[#B37E2E]" />
-                                </button>
-                            </div>
-                            <ul className="flex-1 overflow-y-auto">
-                                {favoriteDetails.length > 0 ? (
-                                    favoriteDetails.map((favorite) => (
-                                        <li key={favorite.id} className="flex items-center justify-between mb-3">
-                                            <Link
-                                                to={`/cafes/${favorite.id}`}
-                                                className="text-black font-medium"
-                                                onClick={() => setShowFavorites(false)}
-                                            >
-                                                {favorite.name}
-                                            </Link>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    toggleFavorite(favorite.id);
-                                                }}
-                                                className="text-[#B37E2E]"
-                                            >
-                                                <FaHeart />
-                                            </button>
-                                        </li>
-                                    ))
-                                ) : (
-                                    <li className="text-gray-600">No favorites added</li>
-                                )}
-                            </ul>
-                        </div>
-                    )}
                 </div>
             </header>
 
-            {showFilterModal && (
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg w-[90%] max-w-xl p-6 shadow-lg">
-                        <h3 className="text-xl font-semibold mb-4 text-gray-700">Summary</h3>
-                        <div className="mb-4">
-                            <div className="flex flex-wrap gap-2">
-                                {[
-                                    { display: "근교", value: "suburban" },
-                                    { display: "대형", value: "large" },
-                                    { display: "디저트", value: "dessert" },
-                                    { display: "루프탑", value: "rooftop" },
-                                    { display: "북카페", value: "bookCafe" },
-                                    { display: "뷰맛집", value: "scenicView" },
-                                    { display: "복합문화", value: "culturalComplex" },
-                                    { display: "건축/테마", value: "architectureTheme" }
-                                ].map((summary) => (
-                                    <button
-                                        key={summary.value}
-                                        onClick={() =>
-                                            setSelectedSummary((prev) =>
-                                                prev === summary.value ? "" : summary.value
-                                            )
-                                        }
-                                        className={`px-4 py-2 rounded-full border ${selectedSummary === summary.value
-                                            ? "bg-yellow-500 text-white border-yellow-500"
-                                            : "text-yellow-600 border-yellow-500"
-                                            }`}
-                                    >
-                                        {summary.display}
-                                    </button>
-                                ))}
-                            </div>
+            {showFavorites && (
+                <>
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+                        onClick={() => setShowFavorites(false)}
+                    ></div>
+
+                    <div className="fixed top-0 right-0 w-80 h-full bg-[#F8E1C3] shadow-lg z-50 flex flex-col transform transition-transform duration-300 ease-in-out translate-x-0">
+                        <button
+                            onClick={() => setShowFavorites(false)}
+                            className="absolute top-4 right-4 text-[#B37E2E]"
+                        >
+                            <FaTimes />
+                        </button>
+
+                        <div className="flex items-center justify-center h-32">
+                            <h4 className="text-2xl font-semibold text-[#B37E2E] flex items-center gap-1">
+                                My <FaHeart className="text-primary" /> Likes List
+                            </h4>
                         </div>
-                        <div className="flex justify-end gap-2">
-                            <button
-                                onClick={() => setShowFilterModal(false)}
-                                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleFilterApply}
-                                className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
-                            >
-                                Apply
-                            </button>
-                        </div>
+
+                        <ul className="flex-1 overflow-y-auto bg-white p-5">
+                            {favoriteDetails.length > 0 ? (
+                                favoriteDetails.map((favorite) => (
+                                    <li key={favorite.id} className="flex items-center justify-between mb-5">
+                                        <Link
+                                            to={`/cafes/${favorite.id}`}
+                                            className="text-gray-900 font-bold text-lg"
+                                            onClick={() => setShowFavorites(false)}
+                                        >
+                                            {favorite.name}
+                                        </Link>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleFavorite(favorite.id);
+                                            }}
+                                            className="text-[#B37E2E]"
+                                        >
+                                            <FaHeart />
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <li className="text-gray-600">No favorites added</li>
+                            )}
+                        </ul>
                     </div>
-                </div>
+                </>
             )}
         </NavbarContainer>
     );

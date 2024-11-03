@@ -1,4 +1,3 @@
-// components/CafeEdit/EditCafePage.tsx
 import { useState, useEffect } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { checkAuth, getCafeById, updateCafe } from "../api";
@@ -10,9 +9,6 @@ interface Facilities {
     parking: boolean;
     bathroom: boolean;
     petFriendly: boolean;
-    photoSpot: boolean;
-    cozySeats: boolean;
-    suitableForDate: boolean;
     toGo: boolean;
     delivery: boolean;
     groupAvailable: boolean;
@@ -62,9 +58,6 @@ function EditCafePage(): JSX.Element | null {
             parking: false,
             bathroom: false,
             petFriendly: false,
-            photoSpot: false,
-            cozySeats: false,
-            suitableForDate: false,
             toGo: false,
             delivery: false,
             groupAvailable: false,
@@ -101,23 +94,20 @@ function EditCafePage(): JSX.Element | null {
                         parking: facilities.parking === "true" || facilities.parking === true,
                         bathroom: facilities.bathroom === "true" || facilities.bathroom === true,
                         petFriendly: facilities.petFriendly === "true" || facilities.petFriendly === true,
-                        photoSpot: facilities.photoSpot === "true" || facilities.photoSpot === true,
-                        cozySeats: facilities.cozySeats === "true" || facilities.cozySeats === true,
-                        suitableForDate: facilities.suitableForDate === "true" || facilities.suitableForDate === true,
                         toGo: facilities.toGo === "true" || facilities.toGo === true,
                         delivery: facilities.delivery === "true" || facilities.delivery === true,
                         groupAvailable: facilities.groupAvailable === "true" || facilities.groupAvailable === true,
                         applePay: facilities.applePay === "true" || facilities.applePay === true,
                     },
                     summaries: {
-                        suburban: summaries.suburban === "true" || summaries.suburban === true,
-                        large: summaries.large === "true" || summaries.large === true,
-                        dessert: summaries.dessert === "true" || summaries.dessert === true,
-                        rooftop: summaries.rooftop === "true" || summaries.rooftop === true,
-                        bookCafe: summaries.bookCafe === "true" || summaries.bookCafe === true,
-                        scenicView: summaries.scenicView === "true" || summaries.scenicView === true,
-                        culturalComplex: summaries.culturalComplex === "true" || summaries.culturalComplex === true,
-                        architectureTheme: summaries.architectureTheme === "true" || summaries.architectureTheme === true,
+                        suburban: summaries?.suburban === "true" || summaries?.suburban === true,
+                        large: summaries?.large === "true" || summaries?.large === true,
+                        dessert: summaries?.dessert === "true" || summaries?.dessert === true,
+                        rooftop: summaries?.rooftop === "true" || summaries?.rooftop === true,
+                        bookCafe: summaries?.bookCafe === "true" || summaries?.bookCafe === true,
+                        scenicView: summaries?.scenicView === "true" || summaries?.scenicView === true,
+                        culturalComplex: summaries?.culturalComplex === "true" || summaries?.culturalComplex === true,
+                        architectureTheme: summaries?.architectureTheme === "true" || summaries?.architectureTheme === true,
                     },
                 });
             } catch (error) {

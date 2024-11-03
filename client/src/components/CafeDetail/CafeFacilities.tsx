@@ -27,7 +27,7 @@ const facilitiesData: Facility[] = [
     { key: "bathroom", label: "Bathroom", icon: FaRestroom },
     { key: "toGo", label: "To Go", icon: FaShoppingBag },
     { key: "delivery", label: "Delivery", icon: FaTruck },
-    { key: "groupsAvailable", label: "Groups", icon: FaUsers },
+    { key: "groupAvailable", label: "Groups", icon: FaUsers },
     { key: "applePay", label: "Apple Pay", icon: FaApple },
 ];
 
@@ -39,12 +39,14 @@ function CafeFacilities({ facilities }: CafeFacilitiesProps): JSX.Element {
                 {facilitiesData.map(({ key, label, icon: Icon }) => (
                     <li
                         key={key}
-                        className={`flex flex-col items-center gap-2 ${facilities[key] ? 'text-primary' : 'text-gray-400'
-                            }`}
+                        className={`flex flex-col items-center gap-2 ${facilities[key] ? 'text-primary' : 'text-[#E0E0E0]'}`}
                     >
                         <Icon size={24} />
-                        <span className="text-gray-800">{label}</span>
+                        <span className={`text-gray-800 ${key === 'petFriendly' || key === 'applePay' ? 'whitespace-nowrap' : ''}`}>
+                            {label}
+                        </span>
                     </li>
+
                 ))}
             </ul>
         </div>

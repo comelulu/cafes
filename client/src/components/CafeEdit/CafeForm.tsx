@@ -8,9 +8,6 @@ interface Facilities {
     parking: boolean;
     bathroom: boolean;
     petFriendly: boolean;
-    photoSpot: boolean;
-    cozySeats: boolean;
-    suitableForDate: boolean;
     toGo: boolean;
     delivery: boolean;
     groupAvailable: boolean;

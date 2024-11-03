@@ -68,7 +68,7 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
             </div>
 
             {!isCollapsed && (
-                <div className="mt-4 p-4 bg-white border border-secondary rounded-md shadow-sm space-y-4 mb-6">
+                <div className="mt-4 p-4 bg-white rounded-md shadow-md mb-6 text-darkBrown">
                     {error && (
                         <p className="text-red-500 text-sm font-semibold">{error}</p>
                     )}
@@ -78,28 +78,32 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                             placeholder="ID"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="outline-none flex-1 border border-secondary rounded-md p-2 focus:ring-2 focus:ring-secondary focus:border-transparent transition"
+                            className="outline-none w-1/2 border border-[#F3E5CF] rounded-md p-2 focus:ring-2 focus:ring-[#F3E5CF] focus:border-transparent transition"
                         />
                         <input
                             type="password"
                             placeholder="PW"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="outline-none flex-1 border border-secondary rounded-md p-2 focus:ring-2 focus:ring-secondary focus:border-transparent transition"
+                            className="outline-none w-1/2 border border-[#F3E5CF] rounded-md p-2 focus:ring-2 focus:ring-[#F3E5CF] focus:border-transparent transition"
                         />
                     </div>
-                    <textarea
-                        className="outline-none w-full border border-secondary rounded-md p-2 focus:ring-2 focus:ring-secondary focus:border-transparent transition"
-                        placeholder="Write your comment here..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        maxLength={500}
-                    />
-                    <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400">{newComment.length}/500</span>
+                    <div className="flex items-start mt-2 justify-center">
+                        <div className="relative flex-1">
+                            <textarea
+                                className="scrollbar-hide outline-none w-full border border-[#F3E5CF] rounded-md p-2 pr-12 focus:ring-2 focus:ring-[#F3E5CF] focus:border-transparent transition resize-none h-16 md:h-14"
+                                placeholder="Write your comment here..."
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
+                                maxLength={500}
+                            />
+                            <span className="absolute bottom-2 right-3 text-sm text-gray-400 pointer-events-none overflow-hidden">
+                                {newComment.length}/500
+                            </span>
+                        </div>
                         <button
                             onClick={handleAddComment}
-                            className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-secondary-dark transition"
+                            className="ml-2 bg-[#F3E5CF] text-darkBrown rounded-md hover:bg-[#e3d1b8] transition px-6 md:px-10 py-2 h-16 md:h-14"
                         >
                             Register
                         </button>
@@ -112,7 +116,7 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                     {displayedComments.map((comment, index) => (
                         <div
                             key={index}
-                            className="p-4 bg-white border border-gray-100 rounded-md shadow-sm"
+                            className="p-4 bg-white rounded-md shadow-custom"
                         >
                             <div className="flex items-center mb-2">
                                 <div className="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center text-gray-600 font-bold">
@@ -128,7 +132,6 @@ const CommentSection = ({ comments = [], cafeId }: CommentSectionProps): JSX.Ele
                 <p className="text-secondary">No comments available.</p>
             )}
 
-            {/* More Button */}
             {comments.length > 3 && !showAllComments && (
                 <div className="flex justify-center mt-4">
                     <button

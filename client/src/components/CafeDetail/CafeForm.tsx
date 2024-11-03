@@ -21,7 +21,6 @@ const CafeForm = ({ onSubmit }: CafeFormProps): JSX.Element => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit({ name, address, description, photos });
-        // Reset form fields after submission
         setName("");
         setAddress("");
         setDescription("");
@@ -35,7 +34,6 @@ const CafeForm = ({ onSubmit }: CafeFormProps): JSX.Element => {
         const files = Array.from(e.target.files);
         const validFiles = files.filter((file) => file.type.startsWith("image/"));
 
-        // Generate preview URLs for valid image files
         const fileUrls = validFiles.map((file) => URL.createObjectURL(file));
         setPhotos(validFiles);
         setPreviewUrls(fileUrls);

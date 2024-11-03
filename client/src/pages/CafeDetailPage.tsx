@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getCafeById } from "../api";
 import Container from "../components/common/Container";
 import Carousel from "../components/CafeDetail/Carousel";
-import CommentSection from "../components/CafeDetail/CommentSection";
+import CommentSection from "../components/CafeDetail/CafeComment";
 import CafeHeader from "../components/CafeDetail/CafeHeader";
 import CafeSummary from "../components/CafeDetail/CafeSummary";
 import CafeDescription from "../components/CafeDetail/CafeDescription";
@@ -69,15 +69,16 @@ function CafeDetailPage(): JSX.Element | null {
     if (!cafe) return null;
 
     const summaryLabels = {
-        suburban: "Suburban",
-        large: "Large",
-        dessert: "Dessert",
-        rooftop: "Rooftop",
-        bookCafe: "Book Cafe",
-        scenicView: "Scenic View",
-        culturalComplex: "Cultural Complex",
-        architectureTheme: "Architecture Theme",
+        suburban: "근교",
+        large: "대형",
+        dessert: "디저트",
+        rooftop: "루프탑",
+        bookCafe: "북카페",
+        scenicView: "뷰맛집",
+        culturalComplex: "복합문화",
+        architectureTheme: "건축/테마",
     };
+
 
     return (
         <Container>

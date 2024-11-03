@@ -60,6 +60,8 @@ function CafeListPage(): JSX.Element {
                 <LoadingMessage />
             ) : error ? (
                 <ErrorMessage message={error} />
+            ) : cafes.length === 0 ? (
+                <p className="text-center text-gray-500 mt-2">No Cafe Available</p>
             ) : (
                 <CafeList cafes={cafes} />
             )}

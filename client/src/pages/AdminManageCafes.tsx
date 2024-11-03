@@ -74,7 +74,7 @@ const AdminManageCafes = (): JSX.Element => {
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(cafe.id)}
-                                    className="px-4 py-2 bg-primary text-secondary rounded-md text-sm font-medium"
+                                    className="px-4 py-2 bg-secondary text-primary rounded-md text-sm font-medium"
                                 >
                                     Delete
                                 </button>

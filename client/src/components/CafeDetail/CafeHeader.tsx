@@ -1,4 +1,4 @@
-import { FaHeart, FaRegHeart, FaRegShareSquare } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { LuUpload } from "react-icons/lu";
 import AddressLink from "./AddressLink";
 import { useFavorite } from "../../context/FavoriteProvider";
