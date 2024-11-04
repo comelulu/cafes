@@ -33,6 +33,10 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const [selectedSummary, setSelectedSummary] = useState<string>("");
     const [showFilterModal, setShowFilterModal] = useState(false);
 
+    // Temporary state for input values
+    const [inputFilterQuery, setInputFilterQuery] = useState("");
+    const [inputSelectedSummary, setInputSelectedSummary] = useState<string>("");
+
     const filterModalRef = useRef<HTMLDivElement>(null);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
@@ -98,6 +102,27 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
         }
     }, [favorites, favoriteCache]);
 
+    const toggleFilterModal = useCallback(() => {
+        if (!isButtonDisabled) {
+            setShowFilterModal((prev) => !prev);
+            setIsButtonDisabled(true);
+
+            setTimeout(() => {
+                setIsButtonDisabled(false);
+            }, 300);
+        }
+    }, [isButtonDisabled]);
+
+    const applyFilters = () => {
+        setFilterQuery(inputFilterQuery);
+        setSelectedSummary(inputSelectedSummary);
+        setShowFilterModal(false);
+    };
+
+    const handleSearchIconClick = () => {
+        setFilterQuery(inputFilterQuery);
+    };
+
     useEffect(() => {
         if (isSpecialRoute) return;
 
@@ -111,21 +136,6 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
 
         navigate(`/?${urlParams.toString()}`, { replace: true });
     }, [filterQuery, selectedSummary, navigate, isSpecialRoute]);
-
-    const toggleFilterModal = useCallback(() => {
-        if (!isButtonDisabled) {
-            setShowFilterModal((prev) => !prev);
-            setIsButtonDisabled(true);
-
-            setTimeout(() => {
-                setIsButtonDisabled(false);
-            }, 300);
-        }
-    }, [isButtonDisabled]);
-
-    const handleFilterApply = () => {
-        setShowFilterModal(false);
-    };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -152,11 +162,14 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                         <input
                             type="text"
                             placeholder="Search cafes"
-                            value={filterQuery}
-                            onChange={(e) => setFilterQuery(e.target.value)}
+                            value={inputFilterQuery}
+                            onChange={(e) => setInputFilterQuery(e.target.value)}
                             className="w-full px-4 py-2 text-gray-500 border-b-2 border-[#B37E2E] focus:outline-none focus:border-b-2 focus:border-yellow-500 placeholder-gray-400"
                         />
-                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <span
+                            onClick={handleSearchIconClick}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -179,7 +192,7 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                         disabled={isButtonDisabled}
                         className="flex items-center gap-1 px-4 py-2 border border-primary text-primary rounded-full"
                     >
-                        {selectedSummary ? summaryTranslations[selectedSummary as keyof typeof summaryTranslations] : "필터"}
+                        {inputSelectedSummary ? summaryTranslations[inputSelectedSummary as keyof typeof summaryTranslations] : "필터"}
                         <PiSlidersHorizontal className="w-5 h-5" />
                     </button>
 
@@ -191,8 +204,8 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                                     {Object.entries(summaryTranslations).map(([value, display]) => (
                                         <button
                                             key={value}
-                                            onClick={() => setSelectedSummary((prev) => (prev === value ? "" : value))}
-                                            className={`px-4 py-2 rounded-full border ${selectedSummary === value ? "bg-primary text-white border-primary-400" : "text-[#D1B282] border-[#D1B282]"}`}
+                                            onClick={() => setInputSelectedSummary((prev) => (prev === value ? "" : value))}
+                                            className={`px-4 py-2 rounded-full border ${inputSelectedSummary === value ? "bg-primary text-white border-primary-400" : "text-[#D1B282] border-[#D1B282]"}`}
                                         >
                                             {display}
                                         </button>
@@ -207,8 +220,8 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
                                     취소
                                 </button>
                                 <button
-                                    onClick={handleFilterApply}
-                                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary"
+                                    onClick={applyFilters}
+                                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-500"
                                 >
                                     적용하기
                                 </button>

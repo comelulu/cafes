@@ -34,6 +34,8 @@ function CafeDetailPage(): JSX.Element | null {
             try {
                 if (id) {
                     const response = await getCafeById(parseInt(id));
+                    console.log("response.data.data: ", response.data.data.facilities);
+
                     setCafe(response.data.data as unknown as Cafe);
                 }
             } catch (error) {
@@ -46,22 +48,47 @@ function CafeDetailPage(): JSX.Element | null {
         fetchCafeDetails();
     }, [id]);
 
-    const handleShare = () => {
+    const handleShare = async () => {
+        if (!cafe) return;
+
         const shareData = {
-            title: cafe?.name || "",
-            text: `Check out this cafe: ${cafe?.name}`,
+            title: cafe.name,
+            text: `Check out this cafe: ${cafe.name}\nLocation: ${cafe.address}\n${cafe.description || ''}`,
             url: window.location.href,
         };
-        if (navigator.share) {
-            navigator.share(shareData).catch((error) => {
-                console.error("Error sharing:", error);
-                alert("Unable to share. Please try again.");
-            });
-        } else {
-            navigator.clipboard.writeText(shareData.url).then(() => {
-                alert("Link copied to clipboard!");
-            });
+
+        const htmlContent = `
+            <h3>Check out this cafe: ${cafe.name}</h3>
+            <p><strong>Location:</strong> ${cafe.address}</p>
+            <p>${cafe.description || ''}</p>
+            <a href="${window.location.href}">View more details</a>
+        `;
+
+        try {
+            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                await navigator.share(shareData);
+                console.log("Data was shared successfully");
+            } else {
+                console.log("Cannot share data through Web Share API. Fallback to clipboard copy.");
+                fallbackToClipboardAsHtml(htmlContent);
+            }
+        } catch (error) {
+            console.error("Error sharing:", error);
+            alert("Sharing failed. Trying to copy the content to your clipboard.");
+            fallbackToClipboardAsHtml(htmlContent);
         }
+    };
+
+    const fallbackToClipboardAsHtml = (htmlContent: string) => {
+        const blob = new Blob([htmlContent], { type: "text/html" });
+        const data = [new ClipboardItem({ "text/html": blob })];
+
+        navigator.clipboard.write(data)
+            .then(() => alert("Link and cafe details copied to clipboard in HTML format!"))
+            .catch((error) => {
+                console.error("Clipboard write error:", error);
+                alert("Failed to copy link to clipboard. Please copy manually.");
+            });
     };
 
     if (isLoading) return <div className="text-secondary">Loading...</div>;
