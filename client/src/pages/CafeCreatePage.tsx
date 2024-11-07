@@ -1,4 +1,3 @@
-// components/CafeCreate/CreateCafePage.tsx
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { checkAuth, addCafe } from "../api";
@@ -110,8 +109,8 @@ const CreateCafePage = (): JSX.Element | null => {
 
         try {
             await addCafe(data);
-            setSuccessMessage("Cafe added successfully!");
-            setRedirect(window.confirm("Cafe added successfully! Click OK to go to the Admin page."));
+            setSuccessMessage("카페가 성공적으로 추가되었습니다!");
+            setRedirect(window.confirm("카페가 성공적으로 추가되었습니다! 확인을 클릭하면 관리자 페이지로 이동합니다."));
         } catch (error) {
             console.error("Error adding Cafe:", error);
         }
@@ -124,7 +123,7 @@ const CreateCafePage = (): JSX.Element | null => {
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-10">
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-12 md:p-16">
-                <h1 className="text-4xl font-semibold text-center text-darkBrown mb-8">Create New Cafe</h1>
+                <h1 className="text-4xl font-semibold text-center text-darkBrown mb-8">새 카페 추가</h1>
                 {successMessage && <p className="text-green-500 text-center mb-6">{successMessage}</p>}
                 <CafeForm
                     formData={formData}

@@ -1,5 +1,5 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { LuUpload } from "react-icons/lu";
+import { IoCopyOutline } from "react-icons/io5";
 import AddressLink from "./AddressLink";
 import { useFavorite } from "../../context/FavoriteProvider";
 
@@ -7,12 +7,20 @@ interface CafeHeaderProps {
     id: string;
     name: string;
     address: string;
-    onShare: () => void;
 }
 
-function CafeHeader({ id, name, address, onShare }: CafeHeaderProps): JSX.Element {
+function CafeHeader({ id, name, address }: CafeHeaderProps): JSX.Element {
     const { favorites, toggleFavorite } = useFavorite();
     const isFavorited = favorites.includes(id);
+
+    const copyLinkToClipboard = () => {
+        const link = `${window.location.origin}/cafes/${id}`;
+        navigator.clipboard.writeText(link).then(() => {
+            alert("링크가 클립보드에 복사되었습니다!");
+        }).catch(() => {
+            alert("링크 복사에 실패했습니다.");
+        });
+    };
 
     return (
         <div className="flex flex-col justify-between mt-7">
@@ -28,11 +36,11 @@ function CafeHeader({ id, name, address, onShare }: CafeHeaderProps): JSX.Elemen
                         {isFavorited ? <FaHeart size={22} className="text-darkBrown" /> : <FaRegHeart size={22} className="text-darkBrown" />}
                     </button>
                     <button
-                        onClick={onShare}
+                        onClick={copyLinkToClipboard}
                         className="flex items-center gap-1 text-darkBrown hover:text-darkBrown transition"
-                        title="Share"
+                        title="Copy Link"
                     >
-                        <LuUpload size={24} /> 공유하기
+                        <IoCopyOutline size={24} />
                     </button>
                 </div>
             </div>

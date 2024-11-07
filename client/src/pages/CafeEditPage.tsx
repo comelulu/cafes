@@ -130,11 +130,11 @@ function EditCafePage(): JSX.Element | null {
 
         try {
             await updateCafe(Number(id), { ...updatedData, facilities, summaries });
-            alert("Cafe updated successfully!");
+            alert("카페가 성공적으로 업데이트되었습니다!");
             navigate("/admin");
         } catch (error) {
             console.error("Error updating cafe:", error);
-            alert("Failed to update the cafe. Please try again.");
+            alert("카페 업데이트에 실패했습니다. 다시 시도해 주세요.");
         }
     };
 
@@ -144,7 +144,7 @@ function EditCafePage(): JSX.Element | null {
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-10">
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-12 md:p-16">
-                <h1 className="text-4xl font-semibold text-center text-darkBrown mb-8">Edit Cafe</h1>
+                <h1 className="text-4xl font-semibold text-center text-darkBrown mb-8">카페 수정</h1>
                 <CafeForm
                     formData={formData}
                     setFormData={setFormData}

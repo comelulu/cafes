@@ -5,7 +5,6 @@ interface CafeSummaryProps {
 }
 
 function CafeSummary({ summaries, summaryLabels }: CafeSummaryProps): JSX.Element {
-    console.log("summaries: ", summaries);
 
     return (
         <div className="border-b-2 border-gray-100 pb-5">

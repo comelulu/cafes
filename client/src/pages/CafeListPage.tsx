@@ -44,7 +44,7 @@ function CafeListPage(): JSX.Element {
             setCafes(formattedCafes);
         } catch (error) {
             console.error("Error fetching cafés:", error);
-            setError("Failed to load cafes. Please try again later.");
+            setError("카페 정보를 불러오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.");
         } finally {
             setIsLoading(false);
         }
@@ -61,7 +61,7 @@ function CafeListPage(): JSX.Element {
             ) : error ? (
                 <ErrorMessage message={error} />
             ) : cafes.length === 0 ? (
-                <p className="text-center text-gray-500 mt-2">No Cafe Available</p>
+                <p className="text-center text-gray-500 mt-2">카페 정보가 없습니다</p>
             ) : (
                 <CafeList cafes={cafes} />
             )}

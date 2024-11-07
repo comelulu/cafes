@@ -33,7 +33,6 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const [selectedSummary, setSelectedSummary] = useState<string>("");
     const [showFilterModal, setShowFilterModal] = useState(false);
 
-    // Temporary state for input values
     const [inputFilterQuery, setInputFilterQuery] = useState("");
     const [inputSelectedSummary, setInputSelectedSummary] = useState<string>("");
 
@@ -47,6 +46,14 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     const { favorites, toggleFavorite } = useFavorite();
     const [favoriteDetails, setFavoriteDetails] = useState<Cafe[]>([]);
     const favoriteCache = useMemo(() => new Map<number, Cafe>(), []);
+
+    const resetFilters = () => {
+        setFilterQuery("");
+        setSelectedSummary("");
+        setInputFilterQuery("");
+        setInputSelectedSummary("");
+    };
+
 
     useEffect(() => {
         const storedFilterQuery = localStorage.getItem("filterQuery");
@@ -153,9 +160,14 @@ const Navbar = ({ isDetailPage }: NavbarProps): JSX.Element => {
     return (
         <NavbarContainer>
             <header className={`flex items-center justify-between py-4 px-6 ${isDetailPage ? "max-w-screen-xl mx-auto" : ""}`}>
-                <Link to="/" className="flex items-center gap-2">
+                <Link
+                    to="/"
+                    className="flex items-center gap-2"
+                    onClick={resetFilters}
+                >
                     <img src="/logo.png" alt="Cafe Spot Logo" className="w-24 h-14" />
                 </Link>
+
 
                 <div className="relative hidden md:flex items-center gap-2 mx-4 flex-1 justify-center">
                     <div className="relative w-80">

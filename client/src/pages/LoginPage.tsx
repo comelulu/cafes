@@ -36,10 +36,10 @@ const LoginPage = (): JSX.Element => {
                 setError("");
                 navigate("/admin");
             } else {
-                setError("Unauthorized access. Check your credentials.");
+                setError("권한이 없습니다. 자격 증명을 확인해 주세요.");
             }
         } catch (error) {
-            setError("Invalid credentials. Please try again.");
+            setError("자격 증명이 잘못되었습니다. 다시 시도해 주세요.");
         }
     };
 
@@ -55,13 +55,13 @@ const LoginPage = (): JSX.Element => {
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 md:p-12">
                 <h1 className="text-3xl font-semibold text-center text-darkBrown mb-6">
-                    Admin Login
+                    관리자 로그인
                 </h1>
                 {error && <p className="text-red-600 text-center mb-6">{error}</p>}
                 <form className="flex flex-col gap-6" onSubmit={handleLogin}>
                     <input
                         type="text"
-                        placeholder="Username"
+                        placeholder="사용자 이름"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
@@ -70,7 +70,7 @@ const LoginPage = (): JSX.Element => {
                     <div className="relative w-full">
                         <input
                             type={passwordVisible ? "text" : "password"}
-                            placeholder="Password"
+                            placeholder="비밀번호"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
@@ -80,14 +80,14 @@ const LoginPage = (): JSX.Element => {
                             onClick={() => setPasswordVisible(!passwordVisible)}
                             className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
                         >
-                            {passwordVisible ? "Hide" : "Show"}
+                            {passwordVisible ? "숨기기" : "보기"}
                         </span>
                     </div>
                     <button
                         type="submit"
                         className="w-full py-3 bg-secondary text-primary rounded-lg font-semibold "
                     >
-                        Login
+                        로그인
                     </button>
                 </form>
             </div>

@@ -1,4 +1,3 @@
-// components/Admin/AdminManageCafes.tsx
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCafes, deleteCafe } from "../api";
@@ -24,7 +23,7 @@ const AdminManageCafes = (): JSX.Element => {
                 setCafes(response.data.data.sort((a: Cafe, b: Cafe) => b.id - a.id));
             } catch (err) {
                 console.error("Error fetching cafes:", err);
-                setError("Failed to load cafes. Please try again later.");
+                setError("카페 정보를 불러오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.");
             } finally {
                 setLoading(false);
             }
@@ -34,27 +33,27 @@ const AdminManageCafes = (): JSX.Element => {
     }, []);
 
     const handleDelete = async (id: number) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this cafe?");
+        const confirmDelete = window.confirm("정말 이 카페를 삭제하시겠습니까?");
         if (!confirmDelete) return;
 
         try {
             await deleteCafe(id);
             setCafes(cafes.filter((cafe) => cafe.id !== id));
-            alert("Cafe deleted successfully!");
+            alert("카페가 성공적으로 삭제되었습니다!");
             navigate("/admin");
         } catch (err) {
             console.error("Error deleting cafe:", err);
-            alert("Failed to delete the cafe. Please try again.");
+            alert("카페 삭제에 실패했습니다. 다시 시도해 주세요.");
         }
     };
 
-    if (loading) return <div className="loader">Loading...</div>;
+    if (loading) return <div className="loader">로딩 중...</div>;
     if (error) return <p className="text-red-600 text-center">{error}</p>;
 
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6">
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-8">
-                <h1 className="text-2xl font-semibold text-darkBrown text-center mb-6">Manage Cafes</h1>
+                <h1 className="text-2xl font-semibold text-darkBrown text-center mb-6">카페 관리</h1>
                 <div className="flex flex-col gap-4">
                     {cafes.map((cafe) => (
                         <div key={cafe.id} className="p-4 border border-gray-200 rounded-md flex justify-between items-center bg-white shadow-sm">
@@ -70,13 +69,13 @@ const AdminManageCafes = (): JSX.Element => {
                                     to={`/admin/edit-cafe/${cafe.id}`}
                                     className="px-4 py-2 bg-secondary text-primary rounded-md  text-sm font-medium"
                                 >
-                                    Edit
+                                    수정
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(cafe.id)}
                                     className="px-4 py-2 bg-secondary text-primary rounded-md text-sm font-medium"
                                 >
-                                    Delete
+                                    삭제
                                 </button>
                             </div>
                         </div>
